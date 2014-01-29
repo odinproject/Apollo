@@ -29,7 +29,12 @@ public class Apollo {
     /**
      * @param args the command line arguments
      */
+    
+    
     public static void main(String[] args) {
+        
+        
+        
         // TODO code application logic here
         System.out.println("Hello Worlds!");
         
@@ -37,10 +42,16 @@ public class Apollo {
         ui.setVisible(true);
         
         try {
+            printInstruments();
+            
             synth = MidiSystem.getSynthesizer();
             synth.open();
+            
+            Soundbank soundbank = synth.getDefaultSoundbank();
+            Instrument[] instr = soundbank.getInstruments();
             mc = synth.getChannels();
-            Instrument[] instr = synth.getDefaultSoundbank().getInstruments();
+            
+            mc[0].programChange(52);
             synth.loadInstrument(instr[90]);
         } catch (MidiUnavailableException ex) {
             Logger.getLogger(Apollo.class.getName()).log(Level.SEVERE, null, ex);
@@ -50,7 +61,28 @@ public class Apollo {
         uploadCheckerTimer.scheduleAtFixedRate(
         new TimerTask() {
           public void run() {
-              mc[5].noteOn(60+ui.musicValue,800);
+              mc[0].noteOn(60+ui.musicValue,800);
           }}, 0, 800);
+    }
+    
+    public static void printInstruments() throws MidiUnavailableException {
+        Synthesizer synthesizer = MidiSystem.getSynthesizer();
+        synthesizer.open();
+        Instrument[] orchestra = synthesizer.getAvailableInstruments();
+
+        StringBuilder sb = new StringBuilder();
+        String eol = System.getProperty("line.separator");
+        sb.append(
+            "The orchestra has " + 
+            orchestra.length + 
+            " instruments." + 
+            eol);
+        for (Instrument instrument : orchestra) {
+            sb.append(instrument.toString());
+            sb.append(eol);
+        }
+        synthesizer.close();
+        
+        System.out.println(sb.toString());
     }
 }
