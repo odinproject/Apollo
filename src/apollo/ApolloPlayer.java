@@ -10,7 +10,6 @@ import com.sun.media.sound.SF2Soundbank;
 import com.sun.media.sound.*;
 import java.io.InputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,12 +23,29 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Soundbank;
 import javax.sound.midi.Synthesizer;
 
+//        PITCH C       C#      D       D#      E       F       F#      G       G#      A       A#      B
+// OCTAVE       
+// 0            0	1	2	3	4	5	6	7	8	9	10	11
+// 1            12	13	14	15	16	17	18	19	20	21	22	23
+// 2            24	25	26	27	28	29	30	31	32	33	34	35
+// 3            36	37	38	39	40	41	42	43	44	45	46	47
+// 4            48	49	50	51	52	53	54	55	56	57	58	59
+// 5            60	61	62	63	64	65	66	67	68	69	70	71
+// 6            72	73	74	75	76	77	78	79	80	81	82	83
+// 7            84	85	86	87	88	89	90	91	92	93	94	95
+// 8            96	97	98	99	100	101	102	103	104	105	106	107
+// 9            108	109	110	111	112	113	114	115	116	117	118	119
+// 10           120	121	122	123	124	125	126	127
+//        PITCH C       C#      D       D#      E       F       F#      G       G#      A       A#      B
+
 /**
  *
  * @author Martin
  */
 public class ApolloPlayer {
     
+    
+    // midi player information
     private Synthesizer synth;
     private Soundbank soundbank;
     private MidiChannel[] mc;
@@ -38,6 +54,9 @@ public class ApolloPlayer {
     private Instrument[] instruments;
     private int currentNote;
     
+    // A score is composed of up to 16 tracks
+    private Track[] score;
+    
     public ApolloPlayer()
     {
         
@@ -45,27 +64,16 @@ public class ApolloPlayer {
     
     public void play() {
         
-        // TODO code application logic here
-        System.out.println("Hello Worlds!");
-        
+        // Create the interface
         ui = new ApolloUI();
         ui.setVisible(true);
         
         try {
             
-            
-            /*
-             *	We need a synthesizer to play the note on.
-             *	Here, we simply request the default
-             *	synthesizer.
-             */
+            // initialize the audio player
             synth = MidiSystem.getSynthesizer();
-
-            /*
-             *	Of course, we have to open the synthesizer to
-             *	produce any sound for us.
-             */
             synth.open();
+            
 //            File file = new File("soundbank-deluxe.gm");
             File file = new File("OrchestraRhythm.sf2");
 //            File file = new File("FlamencoDrums.sf2");

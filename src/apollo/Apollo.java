@@ -27,9 +27,6 @@ public class Apollo {
     private static MidiChannel[] mc;
     private static int x;
     private static ApolloUI ui;
-    /**
-     * @param args the command line arguments
-     */
     
     public static void main(String[] args) {
         ApolloPlayer player = new ApolloPlayer();
