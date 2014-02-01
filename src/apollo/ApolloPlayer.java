@@ -6,6 +6,8 @@
 
 package apollo;
 
+import apollo.chordbase.Chord;
+import apollo.chordbase.ChordDatabase;
 import com.sun.media.sound.SF2Soundbank;
 import com.sun.media.sound.*;
 import java.io.InputStream;
@@ -39,20 +41,24 @@ import javax.sound.midi.Synthesizer;
 //        PITCH C       C#      D       D#      E       F       F#      G       G#      A       A#      B
 
 /**
- *
+ * I get the feeling this class is doomed to be messy, at least for now. So be it.
  * @author Martin
  */
-public class ApolloPlayer {
+public class ApolloPlayer 
+{
+    //Constants:
+    public final static Integer MIDDLE_C_OFFSET = 60;
     
     
     // midi player information
     private Synthesizer synth;
     private Soundbank soundbank;
-    private MidiChannel[] mc;
-    private int x;
+    private MidiChannel[] midiChannel;
     private ApolloUI ui;
     private Instrument[] instruments;
     private int currentNote;
+    private Chord currentChord;
+    private ChordDatabase chordDatabase = new ChordDatabase();
     
     // A score is composed of up to 16 tracks
     private Track[] score;
@@ -62,26 +68,26 @@ public class ApolloPlayer {
         
     }
     
-    public void play() {
+    public void play() 
+    {
         
         // Create the interface
         ui = new ApolloUI();
         ui.setVisible(true);
         
-        try {
+        try 
+        {
             
             // initialize the audio player
             synth = MidiSystem.getSynthesizer();
             synth.open();
             
-//            File file = new File("soundbank-deluxe.gm");
             File file = new File("OrchestraRhythm.sf2");
-//            File file = new File("FlamencoDrums.sf2");
-            soundbank = MidiSystem.getSoundbank(file);
-//            soundbank = synth.getDefaultSoundbank();
-            mc = synth.getChannels();
-            instruments = soundbank.getInstruments();
+            //soundbank = MidiSystem.getSoundbank(file); //Uncomment this line to get the "orchestra hits" back.
+            soundbank = synth.getDefaultSoundbank();
+            midiChannel = synth.getChannels();
             
+            instruments = soundbank.getInstruments();
             printInstruments(soundbank, instruments);
             
             System.out.println(soundbank.getName());
@@ -91,24 +97,34 @@ public class ApolloPlayer {
                 boolean bInstrumentsLoaded = synth.loadAllInstruments(soundbank);
             }
             
-            int inst = 18;
+            int instrument = 0;
             
-            mc[0].programChange(inst);
-//            IOException | InvalidMidiDataException | 
-        } catch (IOException | InvalidMidiDataException | MidiUnavailableException ex) {
+            midiChannel[0].programChange(instrument);
+        } 
+        catch (/*IOException | InvalidMidiDataException | */MidiUnavailableException ex) 
+        {
             Logger.getLogger(Apollo.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         Timer uploadCheckerTimer = new Timer(true);
+        currentChord = chordDatabase.getChordByNumber(0);
         uploadCheckerTimer.scheduleAtFixedRate(
-        new TimerTask() {
-          @Override
-          public void run() {
-              mc[0].noteOff(currentNote);
-              currentNote = 60+ui.musicValue;
-              mc[0].noteOn(60+ui.musicValue,800);
-              
-          }}, 0, 800);
+            new TimerTask() 
+            {
+                @Override
+                public void run() 
+                {
+                    for (Integer note : currentChord.getNotes())
+                    {
+                        midiChannel[0].noteOff(note+MIDDLE_C_OFFSET);
+                    }
+                    currentChord = chordDatabase.getChordByNumber(ui.musicValue);
+                    for (Integer note : currentChord.getNotes())
+                    {
+                        midiChannel[0].noteOn(note+MIDDLE_C_OFFSET, 800);
+                    }
+                }
+            }, 0, 800);
     }
     
     public void printInstruments(Soundbank soundbank,Instrument[] instruments){
