@@ -12,8 +12,15 @@ package apollo.chordbase;
  */
 public class ChordDatabase 
 {
-    
+    /**
+     * A lookup table, so you can pull any chord from the database specifically.
+     */
     private Chord[][]_chordLibrary;
+    
+    /**
+     * A lookup table, so you can pull any ChordNode from the database specifically.
+     */
+    private ChordNode[][]_chordNodeLibrary;
     
     /**
      * Creates a new chord database, populating it with chords, adding 
@@ -94,8 +101,32 @@ public class ChordDatabase
                 _chordLibrary[pitch][chordNum] = new Chord(_chordLibrary[0][chordNum], pitch);
             }
         }
+        //With the library full, we now wrap the chords in their respective nodes.
+        
+        for (int pitch = 0; pitch < 12; pitch ++)
+        {
+            for (int chordNum = 0; chordNum < 9; chordNum++)
+            {
+                _chordNodeLibrary[pitch][chordNum] = new ChordNode(_chordLibrary[pitch][chordNum]);
+            }
+        }
         
         //With the library full, we now make transitions between chords.
+        //This adds every possible chord as a transition to every possible chordnode.
+        //TODO: Wither prune afterwards or check sanity of a chord before adding it.
+        for (int spitch = 0; spitch < 12; spitch ++)
+        {
+            for (int schordNum = 0; schordNum < 9; schordNum++)
+            {
+                for (int dpitch = 0; dpitch < 12; dpitch ++)
+                {
+                    for (int dchordNum = 0; dchordNum < 9;dchordNum++)
+                    {
+                        _chordNodeLibrary[spitch][schordNum].addTransition(_chordNodeLibrary[dpitch][dchordNum]);
+                    }
+                }
+            }
+        }
     }
     
 // C       C#      D       D#      E       F       F#      G       G#      A       A#      B
