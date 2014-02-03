@@ -9,6 +9,7 @@ package apollo.chordbase;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 /**
  * Represents a node in the connected graph representing the possible chord transitions.
@@ -75,6 +76,22 @@ public class ChordNode
             return false;
         }
         return true;
+    }
+
+    ChordNode getTransition(int emotiveState) 
+    {
+        Random dice = new Random();
+        int transitionNumber =  dice.nextInt(_transitions.size());
+        return _transitions.get(transitionNumber).getDestination();
+    }
+
+    /**
+     * Returns the chord associated with this chordNode.
+     * @return the chord.
+     */
+    Chord getChord() 
+    {
+        return _chord;
     }
     
 }

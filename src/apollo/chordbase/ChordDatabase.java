@@ -26,6 +26,9 @@ public class ChordDatabase
      * Creates a new chord database, populating it with chords, adding 
      * transitions between those chords, and then pruning those transitions.
      */
+    
+    private ChordNode _currentChordNode;
+    
     public ChordDatabase()
     {
         //Creata a library of chords.
@@ -128,6 +131,9 @@ public class ChordDatabase
                 }
             }
         }
+        
+        //Initialize to C major.
+        _currentChordNode = _chordNodeLibrary[0][0];
     }
     
 // C       C#      D       D#      E       F       F#      G       G#      A       A#      B
@@ -143,5 +149,16 @@ public class ChordDatabase
     {
         System.out.println("Returning: "+(i%12)+", "+(i/12));
         return _chordLibrary[i%12][i/12];
+    }
+
+    /**
+     * Gets another chord from the database.
+     * @param emotiveState a number to determine chord transitions.
+     * @return 
+     */
+    public Chord getNextChord(int emotiveState) 
+    {
+        _currentChordNode = _currentChordNode.getTransition(emotiveState);
+        return _currentChordNode.getChord();
     }
 }

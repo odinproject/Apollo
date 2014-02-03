@@ -13,6 +13,7 @@ import com.sun.media.sound.*;
 import java.io.InputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -59,6 +60,7 @@ public class ApolloPlayer
     private int currentNote;
     private Chord currentChord;
     private ChordDatabase chordDatabase = new ChordDatabase();
+    int tick = 0;
     
     // A score is composed of up to 16 tracks
     private Track[] score;
@@ -97,9 +99,11 @@ public class ApolloPlayer
                 boolean bInstrumentsLoaded = synth.loadAllInstruments(soundbank);
             }
             
-            int instrument = 0;
+            int chordInstrument = 51;
+            int melodyInstrument = 0;
             
-            midiChannel[0].programChange(instrument);
+            midiChannel[0].programChange(chordInstrument);
+            midiChannel[1].programChange(melodyInstrument);
         } 
         catch (/*IOException | InvalidMidiDataException | */MidiUnavailableException ex) 
         {
@@ -108,23 +112,38 @@ public class ApolloPlayer
         
         Timer uploadCheckerTimer = new Timer(true);
         currentChord = chordDatabase.getChordByNumber(0);
+        
+        
         uploadCheckerTimer.scheduleAtFixedRate(
             new TimerTask() 
             {
                 @Override
                 public void run() 
                 {
-                    for (Integer note : currentChord.getNotes())
+                    MusicFuncs.turnOffMelodyNote(midiChannel[1], currentChord, tick);
+                    tick++;
+                    if (tick%8==0)
                     {
-                        midiChannel[0].noteOff(note+MIDDLE_C_OFFSET);
+                        MusicFuncs.turnOffGaussianChord(midiChannel[0], currentChord);
+                        selectNewChord();
+                        MusicFuncs.playGaussianChord(midiChannel[0], currentChord, .5);
+                        tick = 0;
                     }
-                    currentChord = chordDatabase.getChordByNumber(ui.musicValue);
-                    for (Integer note : currentChord.getNotes())
-                    {
-                        midiChannel[0].noteOn(note+MIDDLE_C_OFFSET, 800);
-                    }
+                    MusicFuncs.playMelodyNote(midiChannel[1], currentChord, tick, 1);
                 }
-            }, 0, 800);
+
+            private void selectNewChord() 
+            {
+                //There are two lines below. They represent different ways of selecting chords.
+                
+                //Select based on the current chord number in the GUI.
+                //currentChord = chordDatabase.getChordByNumber(ui.musicValue);
+                
+                //Have the computer select a chord. See the method for further details.
+                currentChord = chordDatabase.getNextChord(ui.musicValue);
+            }
+            
+            }, 0, 200);
     }
     
     public void printInstruments(Soundbank soundbank,Instrument[] instruments){
