@@ -62,9 +62,6 @@ public class ApolloPlayer
     private ChordDatabase chordDatabase = new ChordDatabase();
     int tick = 0;
     
-    // A score is composed of up to 16 tracks
-    private Track[] score;
-    
     public ApolloPlayer()
     {
         
