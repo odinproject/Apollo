@@ -30,6 +30,7 @@ public class ChordDatabase
     {
         //Creata a library of chords.
         _chordLibrary = new Chord[12][9];
+        _chordNodeLibrary = new ChordNode[12][9];
         
         //Populate the C chords:
         // - C major
