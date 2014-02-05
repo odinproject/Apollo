@@ -101,7 +101,7 @@ public class ResearchCode
         double oldTime = 0;
         double timeScalar = 0.450859375;
         
-        int[] noteWeights = new int[12];
+        double[] noteWeights = new double[12];
         
         for (Integer time : timeSet.keySet())
         {
@@ -112,8 +112,15 @@ public class ResearchCode
             {
                 if (command instanceof NoteOn)
                 {
-                    System.out.println("Playing "+((NoteOn)command).getNoteNumber());
-                    noteWeights[((NoteOn)command).getNoteNumber()%12] += 100;
+                    if (((NoteOn)command).getVelocity() != 0)
+                    {
+                        System.out.println("Playing "+((NoteOn)command).getNoteNumber());
+                        noteWeights[((NoteOn)command).getNoteNumber()%12] += 100;
+                    }
+                    else
+                    {
+                        noteWeights[((NoteOn)command).getNoteNumber()%12] -= 100;
+                    }
                 }
                 if (command instanceof NoteOff)
                 {

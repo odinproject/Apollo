@@ -16,7 +16,15 @@ import java.util.Set;
  */
 public class Chord 
 {
+    /**
+     * The notes in this chord.
+     */
     private Set<Integer> _notes;
+    
+    /**
+     * The name of this chord.
+     */
+    private String name = "Unnamed Chord";
     
     /**
      * Creates an empty chord.
@@ -84,5 +92,32 @@ public class Chord
            note = note%12;
        }
        this._notes.add(note);
+    }
+    
+    /**
+     * Gets the name of the chord, as defined by its name.
+     * @return the name of the chord.
+     */
+    public String getName() 
+    {
+        return name;
+    }
+
+    /**
+     * Renames a chord to the given name.
+     * @param name the new name.
+     */
+    public void rename(String name) 
+    {
+        this.name = name;
+    }
+    
+    /**
+     * Returns the string representation of this object, which is simply its name.
+     * @return the name of the chord.
+     */
+    public String toString()
+    {
+        return name;
     }
 }

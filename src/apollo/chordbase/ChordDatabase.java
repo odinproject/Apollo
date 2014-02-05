@@ -6,6 +6,8 @@
 
 package apollo.chordbase;
 
+import java.util.Set;
+
 /**
  *
  * @author Talonos
@@ -41,12 +43,14 @@ public class ChordDatabase
         cMajor.addNote(0);
         cMajor.addNote(4);
         cMajor.addNote(7);
+        cMajor.rename("C major");
         _chordLibrary[0][0] = cMajor;
         // - C minor
         Chord cMinor = new Chord();
         cMinor.addNote(0);
         cMinor.addNote(3);
         cMinor.addNote(7);
+        cMinor.rename("C minor");
         _chordLibrary[0][1] = cMinor;
         // - C 7
         Chord c7 = new Chord();
@@ -54,6 +58,7 @@ public class ChordDatabase
         c7.addNote(4);
         c7.addNote(7);
         c7.addNote(10);
+        c7.rename("C seven");
         _chordLibrary[0][2] = c7;
         // - C 7 Major
         Chord c7Major = new Chord();
@@ -61,6 +66,7 @@ public class ChordDatabase
         c7Major.addNote(4);
         c7Major.addNote(7);
         c7Major.addNote(11);
+        c7Major.rename("C 7 major");
         _chordLibrary[0][3] = c7Major;
         // - C 7 Minor
         Chord c7Minor = new Chord();
@@ -68,6 +74,7 @@ public class ChordDatabase
         c7Minor.addNote(3);
         c7Minor.addNote(7);
         c7Minor.addNote(10);
+        c7Minor.rename("C 7 minor");
         _chordLibrary[0][4] = c7Minor;
         // - C diminished;
         Chord cDiminished = new Chord();
@@ -75,12 +82,14 @@ public class ChordDatabase
         cDiminished.addNote(3);
         cDiminished.addNote(6);
         cDiminished.addNote(9);
+        cDiminished.rename("C diminished");
         _chordLibrary[0][5] = cDiminished;
         // - C augmented
         Chord cAugmented = new Chord();
         cAugmented.addNote(0);
         cAugmented.addNote(4);
         cAugmented.addNote(8);
+        cAugmented.rename("C augmented");
         _chordLibrary[0][6] = cAugmented;
         // - C half diminished
         Chord cHalfDiminished = new Chord();
@@ -88,6 +97,7 @@ public class ChordDatabase
         cHalfDiminished.addNote(3);
         cHalfDiminished.addNote(6);
         cHalfDiminished.addNote(10);
+        cHalfDiminished.rename("C half-diminished");
         _chordLibrary[0][7] = cHalfDiminished;
         // - C minor-major
         Chord cMinorMajor = new Chord();
@@ -95,6 +105,7 @@ public class ChordDatabase
         cMinorMajor.addNote(3);
         cMinorMajor.addNote(7);
         cMinorMajor.addNote(11);
+        cMinorMajor.rename("C minor-major");
         _chordLibrary[0][8] = cMinorMajor;
         
         //Transpose chords to fill out the rest of the library.
@@ -103,6 +114,7 @@ public class ChordDatabase
             for (int chordNum = 0; chordNum < 9; chordNum++)
             {
                 _chordLibrary[pitch][chordNum] = new Chord(_chordLibrary[0][chordNum], pitch);
+                _chordLibrary[pitch][chordNum].rename(getPitchName(pitch)+" "+getChordName(chordNum));
             }
         }
         //With the library full, we now wrap the chords in their respective nodes.
@@ -160,5 +172,142 @@ public class ChordDatabase
     {
         _currentChordNode = _currentChordNode.getTransition(emotiveState);
         return _currentChordNode.getChord();
+    }
+    
+    /**
+     * Given a set of pitch weights, tries to identify what chord the weights represent 
+     * and return the most accurate chord..
+     * @param weights an array of 12 weights, starting at the weight for "c" and 
+     * going up in half-steps from there..
+     * @return the chord it fits most. Null if given the zero vector as weights. Undefined
+     * if the weights can represent multiple chords. TODO: Fix that.
+     */
+    public Chord identifyChord(double[] weights)
+    {
+        //Sanity check.
+        if (weights.length != 12)
+        {
+            throw new IllegalArgumentException("You must pass 12 weights to the "
+                    + "identifyChord function. No more, no less.");
+        }
+        //Normalize the weights. (Turn it into a unit vector)
+        double runningTally = 0;
+        for (int i = 0; i < 12; i++)
+        {
+            runningTally+=weights[i]*weights[i];
+        }
+        if (runningTally == 0)
+        {
+            //No chord here, so don't bother returning one.
+            return null;
+        }
+        for (int i = 0; i < 12; i++)
+        {
+            weights[i]/= Math.sqrt(runningTally);
+        }
+        
+        //Check each chord against the weights we have.
+        Chord bestChordSoFar = null;
+        double bestSimilaritySoFar = -1;
+        
+        for (int chordPitch = 0; chordPitch < 12; chordPitch++)
+        {
+            for (int chordType = 0; chordType < 9; chordType++)
+            {
+                Chord chordImLookingAt = _chordLibrary[chordPitch][chordType];
+                Set<Integer> pitchesImLookingAt = chordImLookingAt.getNotes();
+                double[] chordWeights = new double[12];
+                //Hardcoded normalization:
+                double weightAmount = (pitchesImLookingAt.size()==3?0.577350269:.5);
+                for (Integer i : pitchesImLookingAt)
+                {
+                    chordWeights[i] = weightAmount;
+                }
+                //run a cosine similarity between the two vectors:
+                double similarity = 0;
+                for (int i = 0; i < 12; i++)
+                {
+                    similarity+= chordWeights[i]*weights[i];
+                }
+                //Check to see if this is better than what we have:
+                if (similarity > bestSimilaritySoFar)
+                {
+                    bestChordSoFar = chordImLookingAt;
+                    bestSimilaritySoFar = similarity;
+                }
+            }
+        }
+        
+        return bestChordSoFar;
+    }
+
+    /**
+     * Returns a string associated with a given pitch
+     * @param pitch the pitch to get the string for.
+     * @return the Note-letter associated with the given pitch.
+     */
+    private String getPitchName(int pitch) 
+    {
+        switch(pitch)
+        {
+            case 0:
+                return "C";
+            case 1:
+                return "C#";
+            case 2:
+                return "D";
+            case 3:
+                return "D#";
+            case 4:
+                return "E";
+            case 5:
+                return "F";
+            case 6:
+                return "F#";
+            case 7:
+                return "G";
+            case 8:
+                return "G#";
+            case 9:
+                return "A";
+            case 10:
+                return "A#";
+            case 11:
+                return "B";
+            default:
+                return "Broken";
+        }
+    }
+
+    /**
+     * Returns a string describing a given chord type.
+     * @param chordNum the type of chord, as defined by the chord library.
+     * @return a string containing the name of the chord type.
+     */
+    private String getChordName(int chordNum) 
+    {
+        switch(chordNum)
+        {
+            case 0:
+                return "major";
+            case 1:
+                return "minor";
+            case 2:
+                return "seven";
+            case 3:
+                return "7 major";
+            case 4:
+                return "7 minor";
+            case 5:
+                return "diminished";
+            case 6:
+                return "augmented";
+            case 7:
+                return "half-diminished";
+            case 8:
+                return "minor-major";
+            default:
+                return "broken";
+        }
     }
 }
