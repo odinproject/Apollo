@@ -26,10 +26,8 @@ public class Apollo {
     private static Synthesizer synth;
     private static MidiChannel[] mc;
     private static int x;
-    private static ApolloUI ui;
     
     public static void main(String[] args) {
         ApolloPlayer player = new ApolloPlayer();
-        player.play();
     }
 }

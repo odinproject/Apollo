@@ -3,10 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/Users/Martin/NetBeansProjects/Apollo/src/game/gamestate/GameStateManager.java</file>
+            <file>file:/Users/Martin/NetBeansProjects/Apollo/src/game/GamePanel.java</file>
             <file>file:/Users/Martin/NetBeansProjects/Apollo/src/apollo/ApolloPlayer.java</file>
             <file>file:/Users/Martin/NetBeansProjects/Apollo/src/apollo/Apollo.java</file>
-            <file>file:/Users/Martin/NetBeansProjects/Apollo/src/apollo/ApolloUI.java</file>
-            <file>file:/Users/Martin/NetBeansProjects/Apollo/src/apollo/Track.java</file>
+            <file>file:/Users/Martin/NetBeansProjects/Apollo/src/game/gamestate/GameState.java</file>
+            <file>file:/Users/Martin/NetBeansProjects/Apollo/src/game/gamestate/MenuState.java</file>
         </group>
     </open-files>
 </project-private>

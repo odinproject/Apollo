@@ -25,6 +25,8 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Soundbank;
 import javax.sound.midi.Synthesizer;
+import game.GamePanel;
+import javax.swing.JFrame;
 
 //        PITCH C       C#      D       D#      E       F       F#      G       G#      A       A#      B
 // OCTAVE       
@@ -50,12 +52,11 @@ public class ApolloPlayer
     //Constants:
     public final static Integer MIDDLE_C_OFFSET = 60;
     
-    
     // midi player information
     private Synthesizer synth;
     private Soundbank soundbank;
     private MidiChannel[] midiChannel;
-    private ApolloUI ui;
+    private GamePanel game;
     private Instrument[] instruments;
     private int currentNote;
     private Chord currentChord;
@@ -64,19 +65,22 @@ public class ApolloPlayer
     
     public ApolloPlayer()
     {
-        
+        init();
     }
     
-    public void play() 
+    public void init()
     {
-        
+        game = new GamePanel(this);
         // Create the interface
-        ui = new ApolloUI();
-        ui.setVisible(true);
+        JFrame window = new JFrame("Adventure Quest");
+        window.setContentPane(game);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setResizable(false);
+        window.pack();
+        window.setVisible(true);
         
         try 
         {
-            
             // initialize the audio player
             synth = MidiSystem.getSynthesizer();
             synth.open();
@@ -106,10 +110,12 @@ public class ApolloPlayer
         {
             Logger.getLogger(Apollo.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+    }
+    
+    public void play() 
+    {   
         Timer uploadCheckerTimer = new Timer(true);
         currentChord = chordDatabase.getChordByNumber(0);
-        
         
         uploadCheckerTimer.scheduleAtFixedRate(
             new TimerTask() 
@@ -137,7 +143,7 @@ public class ApolloPlayer
                 //currentChord = chordDatabase.getChordByNumber(ui.musicValue);
                 
                 //Have the computer select a chord. See the method for further details.
-                currentChord = chordDatabase.getNextChord(ui.musicValue);
+                currentChord = chordDatabase.getNextChord(game.musicValue);
             }
             
             }, 0, 200);
