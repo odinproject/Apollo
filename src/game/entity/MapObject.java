@@ -47,8 +47,6 @@ public abstract class MapObject {
     protected boolean facingRight;
 
     // movement
-    protected boolean left;
-    protected boolean right;
     protected boolean up;
     protected boolean down;
     protected boolean jumping;
@@ -67,7 +65,7 @@ public abstract class MapObject {
     public MapObject(TileMap tm)
     {
         tileMap = tm;
-        tileSize = tm.getTileSize(); 
+        tileSize = tm.getTileSize();
     }
 
     public boolean intersects(MapObject o)
@@ -85,9 +83,9 @@ public abstract class MapObject {
     public void calculateCorners(double x, double y)
     {
         int leftTile = (int)(x - cwidth / 2) / tileSize;
-        int rightTile = (int)(x + cwidth / 2 - 1) / tileSize;
-        int topTile = (int)(y - cheight / 2) / tileSize;
-        int bottomTile = (int)(y + cheight / 2 - 1) / tileSize;
+        int rightTile = (int)(x + cwidth / 2) / tileSize;
+        int topTile = (int)(y - 0.4*cheight) / tileSize;
+        int bottomTile = (int)(y + 0.4*cheight) / tileSize;
 
         int tl = tileMap.getType(topTile, leftTile);
         int tr = tileMap.getType(topTile, rightTile);
@@ -116,8 +114,8 @@ public abstract class MapObject {
         {
             if(topLeft || topRight)
             {
-                dy = 0;
-                ytemp = currRow * tileSize + cheight / 2;
+                dy = -0.5*dy;
+//                ytemp = currRow * tileSize + cheight / 2;
             }
             else
             {
@@ -130,7 +128,6 @@ public abstract class MapObject {
             {
                 dy = 0;
                 falling = false;
-                ytemp = (currRow + 1) * tileSize - cheight / 2;
             }
             else
             {
@@ -143,8 +140,8 @@ public abstract class MapObject {
         {
             if(topLeft || bottomLeft)
             {
-                dx = 0;
-                xtemp = currCol * tileSize + cwidth / 2;
+                dx = -0.5*dx;
+//                xtemp = currCol * tileSize + cwidth / 4;
             }
             else
             {
@@ -155,8 +152,8 @@ public abstract class MapObject {
         {
             if(topRight || bottomRight)
             {
-                dx = 0;
-                xtemp = (currCol + 1) * tileSize - cwidth / 2;
+                dx = -0.5*dx;
+//                xtemp = (currCol + 1) * tileSize - cwidth / 4;
             }
             else
             {
@@ -198,8 +195,6 @@ public abstract class MapObject {
         ymap = tileMap.gety();
     }
 
-    public void setLeft(boolean b) { left = b; }
-    public void setRight(boolean b) { right = b; }
     public void setUp(boolean b) { up = b; }
     public void setDown(boolean b) { down = b; }
     public void setJumping(boolean b) { jumping = b; }

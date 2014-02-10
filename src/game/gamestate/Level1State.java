@@ -22,13 +22,15 @@ public class Level1State extends GameState {
 
     public void init()
     {
-        tileMap = new TileMap(30);
-        tileMap.loadTiles("/resources/Tilesets/grasstileset.gif");
-        tileMap.loadMap("/resources/Maps/level1-1.map");
+//        tileMap = new TileMap(30);
+//        tileMap.loadTiles("/resources/Tilesets/grasstileset.gif");
+//        tileMap.loadMap("/resources/Maps/level1-1.map");
+        tileMap = new TileMap(16);
+        tileMap.loadTiles("/resources/Tilesets/terrain.png");
+        tileMap.loadMap("/resources/Maps/test.map");
         tileMap.setPosition(0, 0);
-        tileMap.setTween(1);
 
-        bg = new Background("/resources/Backgrounds/grassbg1.png", 0.1);
+        bg = new Background("/resources/Backgrounds/forestbg.jpg", 0.1);
 
         player = new Player(tileMap);
         player.setPosition(100, 100);
@@ -58,6 +60,7 @@ public class Level1State extends GameState {
         player.draw(g);
     }
 
+    // WARNING! KeyPressed ONLY recognizes the most recent press (if there are multiple)
     public void keyPressed(int k)
     {
         if(k == KeyEvent.VK_LEFT) player.setLeft(true);

@@ -46,7 +46,7 @@ public class TileMap
         this.tileSize = tileSize;
         numRowsToDraw = GamePanel.HEIGHT / tileSize + 2;
         numColsToDraw = GamePanel.WIDTH / tileSize + 2;
-        tween = 0.07;
+        tween = 0.065;
     }
 
     public void loadTiles(String s)
@@ -62,7 +62,7 @@ public class TileMap
             {
                 subimage = tileset.getSubimage(col * tileSize,0,tileSize,tileSize);
                 tiles[0][col] = new Tile(subimage, Tile.NORMAL);
-                subimage = tileset.getSubimage(col * tileSize,tileSize,tileSize,tileSize);
+                subimage = tileset.getSubimage(col * tileSize,16,tileSize,tileSize);
                 tiles[1][col] = new Tile(subimage, Tile.BLOCKED);
             }
         }
@@ -159,10 +159,10 @@ public class TileMap
                 int c = rc % numTilesAcross;
 
                 g.drawImage(
-                        tiles[r][c].getImage(),
-                        (int)x + col * tileSize,
-                        (int)y + row * tileSize,
-                        null
+                    tiles[r][c].getImage(),
+                    (int)x + col * tileSize,
+                    (int)y + row * tileSize,
+                    null
                 );
             }
         }

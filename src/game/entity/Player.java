@@ -8,6 +8,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Player extends MapObject {
+    
+    // 
+    private boolean movingRight;
+    private boolean movingLeft;
 	
     // player stuff
     private int health;
@@ -17,33 +21,26 @@ public class Player extends MapObject {
     private boolean dead;
     private boolean flinching;
     private long flinchTimer;
-
-    // fireball
-    private boolean firing;
-    private int fireCost;
-    private int fireBallDamage;
-    private ArrayList<FireBall> fireBalls;
-
-    // scratch
-    private boolean scratching;
-    private int scratchDamage;
-    private int scratchRange;
+    
+    private int playerDirection;
+    private int spriteDirection;
 
     private boolean running;
     private boolean shouldRun;
 
     // animations
     private ArrayList<BufferedImage[]> sprites;
-    private final int[] numFrames = {
-            4, 6, 2, 2, 6
-    };
 
     // animation actions
     private static final int IDLE = 0;
     private static final int WALKING = 1;
-    private static final int JUMPING = 2;
-    private static final int FALLING = 3;
-    private static final int RUNNING = 4;
+    private static final int RUNNING = 2;
+    private static final int JUMPING = 3;
+    private static final int FALLING = 4;
+    
+    
+    private static final int FACING_LEFT = 10;
+    private static final int FACING_RIGHT = 11;
 
     private double maxWalkSpeed;
     private double maxRunSpeed;
@@ -55,13 +52,13 @@ public class Player extends MapObject {
         super(tm);
 
         width = 35;
-        height = 69;
+        height = 62;
         cwidth = 35;
-        cheight = 55;
+        cheight = 62;
 
-        moveSpeed = 0.3;
+        moveSpeed = 0.2;
         // 1.6
-        maxWalkSpeed = 2.0;
+        maxWalkSpeed = 1.5;
         maxRunSpeed = 4.0;
         // 0.4
         stopSpeed = 0.4;
@@ -70,46 +67,34 @@ public class Player extends MapObject {
         jumpStart = -5.0;
         stopJumpSpeed = 0.3;
 
-        facingRight = true;
-
-        health = maxHealth = 5;
-        fire = maxFire = 2500;
+        playerDirection = FACING_RIGHT;
 
         // load sprites
         try
         {
-            BufferedImage spritesheet = ImageIO.read(getClass().getResourceAsStream("/resources/Sprites/Player/playerspritesalternate.png"));
+            BufferedImage spritesheet = ImageIO.read(getClass().getResourceAsStream("/resources/Sprites/Player/test.png"));
 
             sprites = new ArrayList<BufferedImage[]>();
-            for(int i = 0; i < numFrames.length; i++)
-            {
-                BufferedImage[] bi = new BufferedImage[numFrames[i]];
-
-                for(int j = 0; j < numFrames[i]; j++)
-                {
-                    switch (i)
-                    {
-                        case(0):
-                            bi[j] = spritesheet.getSubimage(j * 28, 70, 28, 69);
-                            break;
-                        case(1):
-                            bi[j] = spritesheet.getSubimage(j * 35, 0, 35, 69);
-                            break;
-                        case(2):
-                            bi[j] = spritesheet.getSubimage(j * 30, 139, 30, 69);
-                            break;
-                        case(3):
-                            bi[j] = spritesheet.getSubimage(j * 38, 208, 37, 69);
-                            break;
-                        case(4):
-                            bi[j] = spritesheet.getSubimage(j * 58, 276, 58, 69);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                sprites.add(bi);
-            }
+            // IDLE (right) 0
+            sprites.add(getSpriteStreamForAnimation(spritesheet, 6, 0, 0, 27, 62));
+            // IDLE (left) 1
+            sprites.add(getSpriteStreamForAnimation(spritesheet, 6, 162, 0, 27, 62));
+            // WALKING (right) 2
+            sprites.add(getSpriteStreamForAnimation(spritesheet, 6, 0, 62, 33, 62));
+            // WALKING (left) 3
+            sprites.add(getSpriteStreamForAnimation(spritesheet, 6, 197, 62, 33, 62));
+            // RUNNING (right) 4
+            sprites.add(getSpriteStreamForAnimation(spritesheet, 6, 0, 125, 53, 52));
+            // RUNNING (left) 5
+            sprites.add(getSpriteStreamForAnimation(spritesheet, 6, 0, 178, 54, 53));
+            // JUMPING (right) 6
+            sprites.add(getSpriteStreamForAnimation(spritesheet, 2, 324, 0, 30, 62));
+            // JUMPING (left) 7
+            sprites.add(getSpriteStreamForAnimation(spritesheet, 2, 384, 0, 30, 62));
+            // FALLING (right) 8
+            sprites.add(getSpriteStreamForAnimation(spritesheet, 2, 318, 126, 35, 56));
+            // FALLING (left) 9
+            sprites.add(getSpriteStreamForAnimation(spritesheet, 2, 395, 62, 36, 62));
         }
         catch(Exception e)
         {
@@ -117,25 +102,134 @@ public class Player extends MapObject {
         }
 
         animation = new Animation();
-        currentAction = FALLING;
-        animation.setFrames(sprites.get(FALLING));
-        animation.setDelay(200);
+        changeSpriteToAction(FALLING);
+    }
+    
+    private void changeSpriteToAction(int action)
+    {
+        int spriteIndex = 0;
+        
+        boolean changeDir = (playerDirection != spriteDirection);
+        
+        switch (action)
+        {
+            case (IDLE):
+                if (currentAction != IDLE || changeDir)
+                {
+                    spriteIndex = (playerDirection == FACING_RIGHT) ? 0 : 1;
+                    spriteDirection = playerDirection;
+                    currentAction = IDLE;
+                    animation.setFrames(sprites.get(spriteIndex));
+                    animation.setDelay(200);
+                    cwidth = width = 27;
+                    height = 62;
+                }
+                break;
+            case (WALKING):
+                if (currentAction != WALKING || changeDir)
+                {
+                    spriteIndex = (playerDirection == FACING_RIGHT) ? 2 : 3;
+                    spriteDirection = playerDirection;
+                    currentAction = WALKING;
+                    animation.setFrames(sprites.get(spriteIndex));
+                    animation.setDelay(150);
+                    cwidth = width = 33;
+                    height = 62;
+                }
+                break;
+            case (RUNNING):
+                if (currentAction != RUNNING || changeDir)
+                {
+                    spriteIndex = (playerDirection == FACING_RIGHT) ? 4 : 5;
+                    spriteDirection = playerDirection;
+                    currentAction = RUNNING;
+                    animation.setFrames(sprites.get(spriteIndex));
+                    animation.setDelay(100);
+                    cwidth = width = 53;
+                    height = 53;
+                }
+                break;
+            case (JUMPING):
+                if (currentAction != JUMPING || changeDir)
+                {
+                    spriteIndex = (playerDirection == FACING_RIGHT) ? 6 : 7;
+                    spriteDirection = playerDirection;
+                    currentAction = JUMPING;
+                    animation.setFrames(sprites.get(spriteIndex));
+                    animation.setDelay(200);
+                    cwidth = width = 30;
+                    height = 62;
+                }
+                break;
+            case (FALLING):
+                if (currentAction != FALLING || changeDir)
+                {
+                    spriteIndex = (playerDirection == FACING_RIGHT) ? 8 : 9;
+                    spriteDirection = playerDirection;
+                    currentAction = FALLING;
+                    animation.setFrames(sprites.get(spriteIndex));
+                    animation.setDelay(200);
+                    cwidth = width = 35;
+                    height = 60;
+                }
+                break;
+            default:
+                spriteIndex = (playerDirection == FACING_RIGHT) ? 0 : 1;
+                spriteDirection = playerDirection;
+                currentAction = IDLE;
+                animation.setFrames(sprites.get(spriteIndex));
+                animation.setDelay(200);
+                cwidth = width = 27;
+                height = 62;
+                break;
+        }
+    }
+    
+    /**
+     * @param spriteSheet the entire spritesheet
+     * @param frames how many frames are in this animation
+     * @param startX the starting pixel x position of this animation within the original spritesheet
+     * @param startY the starting pixel y position of this animation within the original spritesheet
+     * @param spriteWidth the width of each frame in this animation
+     * @param spriteHeight the height of each frame in this animation
+     * @return
+     */
+    private BufferedImage[] getSpriteStreamForAnimation(BufferedImage spriteSheet, int frames, int startX, int startY, int spriteWidth, int spriteHeight)
+    {
+        BufferedImage[] spriteStream = new BufferedImage[frames];
+        for(int i=0; i < frames; i++)
+        {
+            spriteStream[i] = spriteSheet.getSubimage((i * spriteWidth)+startX, startY, spriteWidth, spriteHeight);
+        }
+        
+        return spriteStream;
     }
 
-    public int getHealth() { return health; }
-    public int getMaxHealth() { return maxHealth; }
-    public int getFire() { return fire; }
-    public int getMaxFire() { return maxFire; }
-
-    public void setFiring() { firing = true; }
-    public void setScratching() { scratching = true; }
     public void setShouldRun(boolean b) { shouldRun = b; }
+    // the left key has been pressed
+    public void setLeft(boolean b)
+    {
+        movingLeft = b;
+        if (b) playerDirection = FACING_LEFT;
+        if (b) movingRight = false;
+    }
+    
+    public void setRight(boolean b)
+    {
+        movingRight = b;
+        if (b) playerDirection = FACING_RIGHT;
+        if (b) movingLeft = false;
+    }
 
     private void getNextPosition()
     {
         // movement
-        if(left)
+        if (movingLeft && movingRight)
         {
+            dx = 0;
+        }
+        else if(movingLeft)
+        {   
             if (shouldRun)
             {
                 dx -= moveSpeed;
@@ -154,7 +248,7 @@ public class Player extends MapObject {
             }
 
         }
-        else if(right)
+        else if(movingRight)
         {
             if (shouldRun)
             {
@@ -207,13 +301,13 @@ public class Player extends MapObject {
 
             if(dy > 0) jumping = false;
             if(dy < 0 && !jumping) dy += stopJumpSpeed;
-
             if(dy > maxFallSpeed) dy = maxFallSpeed;
         }
     }
 
     public void update()
     {
+        
         // update position
         getNextPosition();
         checkTileMapCollision();
@@ -221,65 +315,29 @@ public class Player extends MapObject {
 
         if (dy > 0)
         {
-            if(currentAction != FALLING)
-            {
-                currentAction = FALLING;
-                animation.setFrames(sprites.get(FALLING));
-                animation.setDelay(200);
-                width = 38;
-                height = 69;
-            }
+            changeSpriteToAction(FALLING);
         }
         else if (dy < 0)
         {
-            if(currentAction != JUMPING)
-            {
-                currentAction = JUMPING;
-                animation.setFrames(sprites.get(JUMPING));
-                animation.setDelay(300);
-                width = 28;
-                height = 69;
-            }
+            changeSpriteToAction(JUMPING);
         }
-        else if(left || right)
+        else if(movingLeft || movingRight)
         {
             if (shouldRun)
             {
-                if (currentAction != RUNNING)
-                {
-                    currentAction = RUNNING;
-                    animation.setFrames(sprites.get(RUNNING));
-                    animation.setDelay(100);
-                    width = 58;
-                    height = 69;
-                }
+                changeSpriteToAction(RUNNING);
             }
-            else if (currentAction != WALKING)
+            else
             {
-                currentAction = WALKING;
-                animation.setFrames(sprites.get(WALKING));
-                animation.setDelay(150);
-                width = 35;
-                height = 69;
+                changeSpriteToAction(WALKING);
             }
         }
         else
         {
-            if(currentAction != IDLE)
-            {
-                currentAction = IDLE;
-                animation.setFrames(sprites.get(IDLE));
-                animation.setDelay(200);
-                width = 28;
-                height = 69;
-            }
+            changeSpriteToAction(IDLE);
         }
 
         animation.update();
-
-        // set direction
-        if(right) facingRight = true;
-        if(left) facingRight = false;
     }
 
     public void draw(Graphics2D g)
@@ -292,23 +350,10 @@ public class Player extends MapObject {
             long elapsed = (System.nanoTime() - flinchTimer) / 1000000;
             if(elapsed / 100 % 2 == 0) return;
         }
-
-        if(facingRight)
-        {
-            g.drawImage(animation.getImage(), 
-                    (int)(x + xmap - width / 2), 
-                    (int)(y + ymap - height / 2), 
-                    null
-            );
-        }
-        else {
-            g.drawImage(animation.getImage(), 
-                    (int)(x + xmap - width / 2 + width), 
-                    (int)(y + ymap - height / 2), 
-                    -width,  
-                    height, 
-                    null
-            );
-        }
+        
+        g.drawImage(animation.getImage(), 
+                (int)(x + xmap - width / 2), 
+                (int)(y + ymap - height / 2), 
+                null);
     }	
 }
