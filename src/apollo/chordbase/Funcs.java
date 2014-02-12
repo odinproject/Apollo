@@ -12,12 +12,12 @@ package apollo.chordbase;
  */
 public class Funcs {
 
-    static void PrintArray(double[] weights) 
+    public static void printArray(double[] weights) 
     {
         System.out.print("[");
         for (int i = 0; i < weights.length; i++)
         {
-            System.out.print(weights[i]+", ");
+            System.out.print(Math.round(weights[i]*100000)/100000+", ");
         }
         System.out.println("]");
     }

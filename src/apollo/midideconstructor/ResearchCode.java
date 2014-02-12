@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import javax.sound.midi.MidiEvent;
+import javax.sound.midi.MidiFileFormat;
 import javax.sound.midi.MidiMessage;
 
 import javax.sound.midi.MidiSystem;
@@ -48,8 +49,13 @@ public class ResearchCode
         }
 
         // create a stream from a file
-        InputStream is = new BufferedInputStream(new FileInputStream(new File(".\\Midis\\Terran.mid")));
+        InputStream is = new BufferedInputStream(new FileInputStream(new File(".\\Midis\\LostWoods.mid")));
 
+        MidiFileReader reader = new MidiFileReader();
+        
+        MidiFileFormat format = reader.getMidiFileFormat(new BufferedInputStream(new FileInputStream(new File(".\\Midis\\LostWoods.mid"))));
+        
+        System.out.println("PPQ: "+format.getResolution()+"  <------------!!!");
         // Sets the current sequence on which the sequencer operates.
         // The stream must point to MIDI file data.
         sequencer.setSequence(is);
@@ -99,7 +105,8 @@ public class ResearchCode
         sequencer.start();
         
         double oldTime = 0;
-        double timeScalar = 0.450859375;
+        double timeScalar = 0.348771484
+;
         
         double[] noteWeights = new double[12];
         

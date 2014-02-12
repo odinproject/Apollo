@@ -90,6 +90,7 @@ public class NoteVisualizer extends javax.swing.JFrame {
 
         bBar.setOrientation(1);
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("jLabel1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -218,5 +219,10 @@ public class NoteVisualizer extends javax.swing.JFrame {
             bars[x].setValue((int)noteWeights[x]);
         }
         jLabel1.setText(d.identifyChord(noteWeights).getName());
+    }
+
+    void printChord(double[] noteWeights) 
+    {
+        System.out.println(d.identifyChord(noteWeights).getName());
     }
 }
