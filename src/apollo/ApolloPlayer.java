@@ -6,6 +6,7 @@
 
 package apollo;
 
+import apollo.chordbase.CheatChordDatabase;
 import apollo.chordbase.Chord;
 import apollo.chordbase.ChordDatabase;
 import com.sun.media.sound.SF2Soundbank;
@@ -60,7 +61,7 @@ public class ApolloPlayer
     private Instrument[] instruments;
     private int currentNote;
     private Chord currentChord;
-    private ChordDatabase chordDatabase = new ChordDatabase();
+    private ChordDatabase chordDatabase = new CheatChordDatabase();
     int tick = 0;
     
     public ApolloPlayer()
@@ -115,7 +116,7 @@ public class ApolloPlayer
     public void play() 
     {   
         Timer uploadCheckerTimer = new Timer(true);
-        currentChord = chordDatabase.getChordByNumber(0);
+        currentChord = chordDatabase.getNextChord(0);
         
         uploadCheckerTimer.scheduleAtFixedRate(
             new TimerTask() 
@@ -125,12 +126,15 @@ public class ApolloPlayer
                 {
                     MusicFuncs.turnOffMelodyNote(midiChannel[1], currentChord, tick);
                     tick++;
-                    if (tick%8==0)
+                    if (tick%4==0)
                     {
                         MusicFuncs.turnOffGaussianChord(midiChannel[0], currentChord);
                         selectNewChord();
                         MusicFuncs.playGaussianChord(midiChannel[0], currentChord, .5);
-                        tick = 0;
+                        if (tick == 8) 
+                        {
+                            tick = 0;
+                        }
                     }
                     MusicFuncs.playMelodyNote(midiChannel[1], currentChord, tick, 1);
                 }

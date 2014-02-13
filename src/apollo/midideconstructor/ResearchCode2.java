@@ -21,6 +21,7 @@ import javax.sound.midi.MidiFileFormat;
 import javax.sound.midi.MidiMessage;
 
 import apollo.chordbase.Funcs;
+import edu.columbia.ee.csmit.MidiKaraoke.MidiMessage.SetTempo;
 
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
@@ -35,6 +36,8 @@ public class ResearchCode2
         //Have a bunch of weights for different points in the song.
         Map<Integer, double[]> songWeights = new TreeMap<>();
         Map<Integer, Integer> currentlyHeldNotes = new TreeMap<>();
+        
+        Map<Integer, Integer> tempoMap = new TreeMap<>();
         
         NoteVisualizer visuals = new NoteVisualizer();
         visuals.setVisible(true);
@@ -53,7 +56,7 @@ public class ResearchCode2
         }
 
         // create a stream from a file
-        InputStream is = new BufferedInputStream(new FileInputStream(new File(".\\Midis\\LostWoods.mid")));
+        InputStream is = new BufferedInputStream(new FileInputStream(new File(".\\Midis\\Kakariko.mid")));
 
         // Sets the current sequence on which the sequencer operates.
         // The stream must point to MIDI file data.
@@ -61,7 +64,7 @@ public class ResearchCode2
         
         //Get the Pulses Per Quarter.
         MidiFileReader reader = new MidiFileReader();
-        MidiFileFormat format = reader.getMidiFileFormat(new BufferedInputStream(new FileInputStream(new File(".\\Midis\\LostWoods.mid"))));
+        MidiFileFormat format = reader.getMidiFileFormat(new BufferedInputStream(new FileInputStream(new File(".\\Midis\\Kakariko.mid"))));
         System.out.println("PPQ: "+format.getResolution()+"  <------------!!!");
         double ppq = format.getResolution();
         if ((int) ppq % 16 != 0)
@@ -75,14 +78,14 @@ public class ResearchCode2
         
         Track[] tracks = sequence.getTracks();
         
-        System.out.println(sequence.deleteTrack(tracks[1]));
+        //System.out.println(sequence.deleteTrack(tracks[1]));
         
         tracks = sequence.getTracks();
         
         sequencer.setSequence(sequence);
         
         //Prepare the buffers.
-        int endOfSong = 160000;
+        int endOfSong = 400000;
         for (int x = 0; x < endOfSong+ppq; x+=((int)ppq/16))
         {
             songWeights.put(x, new double[12]);
@@ -103,7 +106,7 @@ public class ResearchCode2
                 if (c instanceof NoteOn)
                 {
                     NoteOn noteOn = (NoteOn)c;
-                    if (noteOn.hashCode() == 0)
+                    if (noteOn.getVelocity() == 0)
                     {
                         handleNoteRelease(currentlyHeldNotes, songWeights, noteOn.getNoteNumber(), (int)e.getTick(), (int)ppq/16, (int)ppq, endOfSong);
                     }
@@ -114,26 +117,57 @@ public class ResearchCode2
                     NoteOff noteOff = (NoteOff)c;
                     handleNoteRelease(currentlyHeldNotes, songWeights, noteOff.getNoteNumber(), (int)e.getTick(), (int)ppq/16, (int)ppq, endOfSong);
                 }
+                if (c instanceof SetTempo)
+                {
+                    SetTempo setTempo = (SetTempo)c;
+                    System.out.println("At "+e.getTick()+": Tempo: "+setTempo);
+                    tempoMap.put((int)e.getTick(), setTempo.getMicrosecondsPerQuarterNote());
+                }
             }
         }        
 
         // Starts playback of the MIDI data in the currently loaded sequence.
         //sequencer.setTrackMute(1, true);
+        sequencer.setTempoFactor(1f);
         sequencer.start();
         
-        double tempo = 357142;
+        double tempo = 50000;
+        double timeScalar = (tempo/1000)/ppq; //(Milliseconds per pulse)
         
-        double timeScalar = (tempo/1000)/ppq;
+        double microsecondsThrough = 0;
+        int microsecondsWaited = 0;
+        double oldPulses = 0;
         
-        double oldTime = 0;
-        for (int time = 0; time <= endOfSong; time+= ppq/16)
+        for (int pulses = 0; pulses <= endOfSong; pulses+= ppq/16)
         {
-            double timeWaited = (time - oldTime);
-            Thread.sleep((int)(timeWaited * timeScalar));
-            oldTime = time;
+            if (pulses%(ppq*2) == 0)
+            {
+                System.out.println("======Half Measure======");
+            }
+            else if (pulses%ppq == 0)
+            {
+                System.out.println("------------------------");
+            }
+            //Did the tempo change last measure?
+            for (Integer i : tempoMap.keySet())
+            {
+                if (i >= oldPulses && i < pulses)
+                {
+                    tempo = tempoMap.get(i);
+                    timeScalar = (tempo/1000)/ppq; //(Milliseconds per pulse)
+                }
+            }
             
-            visuals.updateBars(songWeights.get(time));
-            visuals.printChord(songWeights.get(time));
+            double pulsesWaited = (pulses - oldPulses);
+            microsecondsThrough += (pulsesWaited * timeScalar);
+            int microSecondToWait = (int)(microsecondsThrough - microsecondsWaited);
+            Thread.sleep(microSecondToWait);
+            microsecondsWaited += microSecondToWait;
+            
+            
+            oldPulses = pulses;
+            visuals.updateBars(songWeights.get(pulses));
+            visuals.printChord(songWeights.get(pulses));
         }
 
     }
@@ -182,7 +216,7 @@ public class ResearchCode2
         adjustedWeight = 1;
         for (int songPosition = ((int)endTime+timeStep); songPosition <=endOfSong+timeStep; songPosition+=timeStep)
         {
-            adjustedWeight *= 0.94;
+            adjustedWeight *= 0.82;
             songWeights.get(songPosition)[pitch] += (noteWeightMultiplier*adjustedWeight);
         }
         

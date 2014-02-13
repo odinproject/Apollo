@@ -7,6 +7,7 @@
 package apollo.midideconstructor;
 
 import apollo.chordbase.ChordDatabase;
+import apollo.chordbase.Funcs;
 import javax.swing.JProgressBar;
 
 /**
@@ -218,6 +219,7 @@ public class NoteVisualizer extends javax.swing.JFrame {
             bars[x].setMaximum(currentMaximum);
             bars[x].setValue((int)noteWeights[x]);
         }
+        Funcs.printArray(noteWeights);
         jLabel1.setText(d.identifyChord(noteWeights).getName());
     }
 

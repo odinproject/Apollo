@@ -17,19 +17,19 @@ public class ChordDatabase
     /**
      * A lookup table, so you can pull any chord from the database specifically.
      */
-    private Chord[][]_chordLibrary;
+    protected Chord[][]_chordLibrary;
     
     /**
      * A lookup table, so you can pull any ChordNode from the database specifically.
      */
-    private ChordNode[][]_chordNodeLibrary;
+    protected ChordNode[][]_chordNodeLibrary;
     
     /**
      * Creates a new chord database, populating it with chords, adding 
      * transitions between those chords, and then pruning those transitions.
      */
     
-    private ChordNode _currentChordNode;
+    protected ChordNode _currentChordNode;
     
     public ChordDatabase()
     {
