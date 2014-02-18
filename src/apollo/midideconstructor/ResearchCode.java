@@ -48,12 +48,13 @@ public class ResearchCode
             System.out.println(tFile.getName());
         }
 
+     
         // create a stream from a file
-        InputStream is = new BufferedInputStream(new FileInputStream(new File(".\\Midis\\LostWoods.mid")));
+        InputStream is = new BufferedInputStream(new FileInputStream(new File(".\\Midis\\scrap_brain_zone.mid")));
 
         MidiFileReader reader = new MidiFileReader();
         
-        MidiFileFormat format = reader.getMidiFileFormat(new BufferedInputStream(new FileInputStream(new File(".\\Midis\\LostWoods.mid"))));
+        MidiFileFormat format = reader.getMidiFileFormat(new BufferedInputStream(new FileInputStream(new File(".\\Midis\\scrap_brain_zone.mid"))));
         
         System.out.println("PPQ: "+format.getResolution()+"  <------------!!!");
         // Sets the current sequence on which the sequencer operates.
@@ -63,6 +64,8 @@ public class ResearchCode
         Sequence sequence = sequencer.getSequence();
         
         Track[] tracks = sequence.getTracks();
+        
+        System.out.println("There are: "+tracks.length+" tracks!!");
         RawMidiMessageParser midiParser = new RawMidiMessageParser();
         for (int i = 0; i < tracks.length; i++)
         {

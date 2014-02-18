@@ -6,6 +6,7 @@
 
 package apollo.chordbase;
 
+import apollo.midideconstructor.ChordConfidences;
 import java.util.Set;
 
 /**
@@ -30,6 +31,7 @@ public class ChordDatabase
      */
     
     protected ChordNode _currentChordNode;
+    private double confidence;
     
     public ChordDatabase()
     {
@@ -109,12 +111,14 @@ public class ChordDatabase
         _chordLibrary[0][8] = cMinorMajor;
         
         //Transpose chords to fill out the rest of the library.
-        for (int pitch = 1; pitch < 12; pitch++)
+        for (int pitch = 0; pitch < 12; pitch++)
         {
             for (int chordNum = 0; chordNum < 9; chordNum++)
             {
                 _chordLibrary[pitch][chordNum] = new Chord(_chordLibrary[0][chordNum], pitch);
                 _chordLibrary[pitch][chordNum].rename(getPitchName(pitch)+" "+getChordName(chordNum));
+                _chordLibrary[pitch][chordNum].setTone(pitch);
+                _chordLibrary[pitch][chordNum].setChordType(chordNum);
             }
         }
         //With the library full, we now wrap the chords in their respective nodes.
@@ -237,7 +241,7 @@ public class ChordDatabase
                 }
             }
         }
-        
+        confidence = bestSimilaritySoFar;
         return bestChordSoFar;
     }
 
@@ -309,5 +313,18 @@ public class ChordDatabase
             default:
                 return "broken";
         }
+    }
+
+    public double getConfidence() 
+    {
+        return confidence;
+    }
+
+    public ChordConfidences getChordWithConfidence(double[] weights) 
+    {
+        ChordConfidences toReturn = new ChordConfidences();
+        toReturn.chord = this.identifyChord(weights);
+        toReturn.confidence = confidence;
+        return toReturn;
     }
 }

@@ -279,8 +279,8 @@ public class CheatChordDatabase extends ChordDatabase
     
     public Chord getNextChord(int emotiveState) 
     {
-        Chord toReturn = chordList[3].get(thingsDoneSoFar++);
-        if (thingsDoneSoFar == chordList[3].size())
+        Chord toReturn = chordList[1].get(thingsDoneSoFar++);
+        if (thingsDoneSoFar == chordList[1].size())
         {
             thingsDoneSoFar = 0;
         }

@@ -56,7 +56,7 @@ public class ResearchCode2
         }
 
         // create a stream from a file
-        InputStream is = new BufferedInputStream(new FileInputStream(new File(".\\Midis\\Kakariko.mid")));
+        InputStream is = new BufferedInputStream(new FileInputStream(new File(".\\Midis\\allianc1.mid")));
 
         // Sets the current sequence on which the sequencer operates.
         // The stream must point to MIDI file data.
@@ -64,12 +64,13 @@ public class ResearchCode2
         
         //Get the Pulses Per Quarter.
         MidiFileReader reader = new MidiFileReader();
-        MidiFileFormat format = reader.getMidiFileFormat(new BufferedInputStream(new FileInputStream(new File(".\\Midis\\Kakariko.mid"))));
+        MidiFileFormat format = reader.getMidiFileFormat(new BufferedInputStream(new FileInputStream(new File(".\\Midis\\allianc1.mid"))));
         System.out.println("PPQ: "+format.getResolution()+"  <------------!!!");
         double ppq = format.getResolution();
         if ((int) ppq % 16 != 0)
         {
-            throw new IllegalArgumentException("Bad ppq detected: "+ppq);
+            //throw new IllegalArgumentException("Bad ppq detected: "+ppq);
+            ppq = 256;
         }
         
         //Actually, I didn't want the sequencer to play it just yet. I actually
@@ -78,11 +79,11 @@ public class ResearchCode2
         
         Track[] tracks = sequence.getTracks();
         
-        //System.out.println(sequence.deleteTrack(tracks[1]));
+        //System.out.println(sequence.deleteTrack(tracks[9]));
+      
+        sequencer.setSequence(sequence);
         
         tracks = sequence.getTracks();
-        
-        sequencer.setSequence(sequence);
         
         //Prepare the buffers.
         int endOfSong = 400000;
@@ -95,6 +96,7 @@ public class ResearchCode2
         //Use the library I found to make something that changes midi bytecode into
         //java classes.
         RawMidiMessageParser midiParser = new RawMidiMessageParser();
+        System.out.println("There are "+tracks.length+" Tracks.");
         for (int i = 0; i < tracks.length; i++)
         {
             System.out.println("Track "+i+": "+tracks[i].size()+" events.");
@@ -177,7 +179,7 @@ public class ResearchCode2
         //Make sure we're actually holding the key down.
         if (!currentlyHeldNotes.keySet().contains(noteNumber))
         {
-            Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe("A note at "+endTime+" was released before ever being held down!");
+            //Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe("A note at "+endTime+" was released before ever being held down!");
             return;
         }
         
@@ -195,7 +197,13 @@ public class ResearchCode2
         //Figure out how much this note should "weigh." number of pulses / pulsesPerQuarter = number of quarter notes.
         double numberOfQuarterNotes = (double)(endTime-startTime)/(double)ppq;
         
-        double noteWeightMultiplier = numberOfQuarterNotes/(1.0+numberOfQuarterNotes);
+        double extendRatio = .82;
+        double previousRatio = .5;
+        double geosums = ((extendRatio/(1-extendRatio))+(previousRatio/(1-previousRatio)))/16;
+        
+        //System.out.println("Geosums: "+geosums);
+        
+        double noteWeightMultiplier = numberOfQuarterNotes/(geosums+numberOfQuarterNotes);
         noteWeightMultiplier *= 100.0;
         
         //As long as the note is being held down, contribute the full note weight.
@@ -208,7 +216,7 @@ public class ResearchCode2
         double adjustedWeight = 1;
         for (int songPosition = ((int)startTime-timeStep); songPosition >=0; songPosition-=timeStep)
         {
-            adjustedWeight *= 0.5;
+            adjustedWeight *= previousRatio;
             songWeights.get(songPosition)[pitch] += (noteWeightMultiplier*adjustedWeight);
         }
         
@@ -216,7 +224,7 @@ public class ResearchCode2
         adjustedWeight = 1;
         for (int songPosition = ((int)endTime+timeStep); songPosition <=endOfSong+timeStep; songPosition+=timeStep)
         {
-            adjustedWeight *= 0.82;
+            adjustedWeight *= extendRatio;
             songWeights.get(songPosition)[pitch] += (noteWeightMultiplier*adjustedWeight);
         }
         

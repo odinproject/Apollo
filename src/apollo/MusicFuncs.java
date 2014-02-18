@@ -25,7 +25,7 @@ public class MusicFuncs
      * @param chord the chord to play.
      * @param velocityAdjuster A number from 0 to 1 to adjust the velocity by.
      */
-    static void playGaussianChord(MidiChannel midiChannel, Chord chord, double velocityAdjuster) 
+    public static void playGaussianChord(MidiChannel midiChannel, Chord chord, double velocityAdjuster) 
     {
         Set<Integer> notes = chord.getNotes();
         for (int pitch = 0; pitch < 128; pitch++)
@@ -41,7 +41,7 @@ public class MusicFuncs
         }
     }
 
-    static void turnOffGaussianChord(MidiChannel midiChannel, Chord currentChord) 
+    public static void turnOffGaussianChord(MidiChannel midiChannel, Chord currentChord) 
     {
         Set<Integer> notes = currentChord.getNotes();
         for (int pitch = 0; pitch < 128; pitch++)

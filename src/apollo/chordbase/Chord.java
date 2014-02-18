@@ -8,13 +8,14 @@ package apollo.chordbase;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
  * A class to represent a chord in a single octave.
  * @author Talonos
  */
-public class Chord 
+public class Chord implements Comparable
 {
     /**
      * The notes in this chord.
@@ -120,4 +121,86 @@ public class Chord
     {
         return name;
     }
+
+    @Override
+    public int compareTo(Object o) 
+    {
+        if (o instanceof Chord)
+        {
+            return name.compareTo(((Chord)o).name);
+        }
+        return -1;
+    }
+
+    @Override
+    public int hashCode() 
+    {
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this._notes);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) 
+    {
+        if (obj == null) 
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass()) 
+        {
+            return false;
+        }
+        final Chord other = (Chord) obj;
+        if (!Objects.equals(this._notes, other._notes)) 
+        {
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * Represents the tone of the chord. 0 is c, 1 is c#, and so forth.
+     */
+    private int tone = -1;
+    
+    private int chordType = -1;
+    
+    /**
+     * Returns the tone of the chord. 0 is c, 1 is c#, and so forth.
+     * @return the tone, or -1 if this is a non-standard chord.
+     */
+    public int getTone()
+    {
+        return tone;
+    }
+    
+    /**
+     * Sets the tone for this chord.
+     * @param tone the new Tone.
+     */
+    public void setTone(int tone) 
+    {
+        this.tone = tone;
+    }
+
+    /**
+     * Gets the chord type, as defined in the ChordDatabase.
+     * @return the chordType, or -1 if this is a non-standard chord.
+     */
+    public int getChordType() 
+    {
+        return chordType;
+    }
+
+    /**
+     * Sets the chordType of this chord.
+     * @param chordType the new type of chord.
+     */
+    public void setChordType(int chordType) 
+    {
+        this.chordType = chordType;
+    }
+    
+    
 }
