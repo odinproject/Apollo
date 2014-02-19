@@ -1,3 +1,5 @@
+E:1, I:1
+boss
 0,0,0 #Selected D major
 0,0,0 #Selected D major
 0,0,0 #Selected D major

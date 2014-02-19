@@ -1,3 +1,5 @@
+E:1,I:.5
+combat
 1,8,0 #Selected A# major
 0,-1,1 #Selected A minor
 1,-7,1 #Selected D minor

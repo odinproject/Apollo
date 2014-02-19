@@ -1,3 +1,5 @@
+E:.5,I:.5
+
 0,0,0 #Selected E major
 0,-3,4 #Selected C# 7 minor
 4,0,1 #Selected C# minor

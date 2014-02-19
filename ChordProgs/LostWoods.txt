@@ -1,3 +1,5 @@
+E:.5,I:-1
+
 0,0,0 #Selected C major
 0,5,0 #Selected F major
 0,0,0 #Selected F major

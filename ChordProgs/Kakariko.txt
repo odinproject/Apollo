@@ -1,3 +1,5 @@
+E:-1,I:-1
+village
 0,-3,1 #Selected G minor
 1,-7,4 #Selected C 7 minor
 4,5,0 #Selected F major
