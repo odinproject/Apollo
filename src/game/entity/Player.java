@@ -304,6 +304,11 @@ public class Player extends MapObject {
             if(dy > maxFallSpeed) dy = maxFallSpeed;
         }
     }
+    
+    public double getDX()
+    {
+        return dx;
+    }
 
     public void update()
     {

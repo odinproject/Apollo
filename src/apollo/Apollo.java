@@ -22,10 +22,6 @@ import java.util.TimerTask;
  * @author Martin
  */
 public class Apollo {
-
-    private static Synthesizer synth;
-    private static MidiChannel[] mc;
-    private static int x;
     
     public static void main(String[] args) {
         ApolloPlayer player = new ApolloPlayer();
