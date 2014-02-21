@@ -1,0 +1,18 @@
+E:-1,I:-1
+village
+-1,6,3 #Selected F 7 major
+3,0,3 #Selected F 7 major
+3,4,4 #Selected A 7 minor
+4,0,4 #Selected A 7 minor
+4,-4,3 #Selected F 7 major
+3,0,3 #Selected F 7 major
+3,-1,4 #Selected E 7 minor
+4,0,4 #Selected E 7 minor
+4,-2,1 #Selected D minor
+1,8,3 #Selected A# 7 major
+3,-1,4 #Selected A 7 minor
+4,-7,7 #Selected D half-diminished
+7,-2,0 #Selected C major
+0,6,7 #Selected F# half-diminished
+7,1,2 #Selected G seven
+2,0,0 #Selected G major

@@ -1,0 +1,13 @@
+E:.5,I:-.5
+victory
+4,5,1 #Selected G minor
+1,-7,4 #Selected C 7 minor
+4,5,2 #Selected F seven
+2,-3,4 #Selected D 7 minor
+4,5,4 #Selected G 7 minor
+4,-2,4 #Selected F 7 minor
+4,1,3 #Selected F# 7 major
+3,0,3 #Selected F# 7 major
+3,-2,3 #Selected E 7 major
+3,-2,0 #Selected D major
+0,0,0 #Selected D major

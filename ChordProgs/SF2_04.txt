@@ -1,0 +1,62 @@
+E:-1,I:-.5
+dungeon
+-1,6,3 #Selected F 7 major
+3,1,4 #Selected F# 7 minor
+4,3,3 #Selected A 7 major
+3,2,4 #Selected B 7 minor
+4,-9,0 #Selected D major
+0,4,4 #Selected F# 7 minor
+4,3,3 #Selected A 7 major
+3,-7,3 #Selected D 7 major
+3,9,4 #Selected B 7 minor
+4,-7,0 #Selected E major
+0,7,4 #Selected B 7 minor
+4,-9,0 #Selected D major
+0,9,4 #Selected B 7 minor
+4,-7,4 #Selected E 7 minor
+4,3,0 #Selected G major
+0,-5,7 #Selected D half-diminished
+7,6,0 #Selected G# major
+0,0,0 #Selected G# major
+0,-3,0 #Selected F major
+0,0,0 #Selected F major
+0,-3,0 #Selected D major
+0,9,4 #Selected B 7 minor
+4,-10,6 #Selected C# augmented
+6,8,8 #Selected A minor-major
+8,-7,0 #Selected D major
+0,9,4 #Selected B 7 minor
+4,-10,6 #Selected C# augmented
+6,1,2 #Selected D seven
+2,3,3 #Selected F 7 major
+3,1,7 #Selected F# half-diminished
+7,3,3 #Selected A 7 major
+3,2,4 #Selected B 7 minor
+4,-9,0 #Selected D major
+0,4,4 #Selected F# 7 minor
+4,3,3 #Selected A 7 major
+3,-7,3 #Selected D 7 major
+3,9,4 #Selected B 7 minor
+4,-7,0 #Selected E major
+0,7,4 #Selected B 7 minor
+4,-9,0 #Selected D major
+0,9,4 #Selected B 7 minor
+4,-7,4 #Selected E 7 minor
+4,3,0 #Selected G major
+0,-5,7 #Selected D half-diminished
+7,6,0 #Selected G# major
+0,0,0 #Selected G# major
+0,-3,0 #Selected F major
+0,0,0 #Selected F major
+0,-3,0 #Selected D major
+0,9,4 #Selected B 7 minor
+4,-10,6 #Selected C# augmented
+6,8,8 #Selected A minor-major
+8,-7,0 #Selected D major
+0,9,4 #Selected B 7 minor
+4,-10,6 #Selected C# augmented
+6,1,2 #Selected D seven
+2,3,3 #Selected F 7 major
+3,1,7 #Selected F# half-diminished
+7,3,3 #Selected A 7 major
+3,2,4 #Selected B 7 minor

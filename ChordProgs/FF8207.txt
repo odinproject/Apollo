@@ -1,0 +1,56 @@
+E:-1,I:.5
+dungeon
+7,0,7 #Selected F half-diminished
+7,-2,7 #Selected D# half-diminished
+7,0,7 #Selected D# half-diminished
+7,-3,7 #Selected C half-diminished
+7,0,7 #Selected C half-diminished
+7,0,7 #Selected C half-diminished
+7,0,7 #Selected C half-diminished
+7,5,7 #Selected F half-diminished
+7,0,7 #Selected F half-diminished
+7,-2,7 #Selected D# half-diminished
+7,0,7 #Selected D# half-diminished
+7,2,1 #Selected F minor
+1,0,1 #Selected F minor
+1,0,1 #Selected F minor
+1,0,1 #Selected F minor
+1,0,1 #Selected F minor
+1,0,1 #Selected F minor
+1,0,7 #Selected F half-diminished
+7,0,7 #Selected F half-diminished
+7,-2,7 #Selected D# half-diminished
+7,0,7 #Selected D# half-diminished
+7,1,1 #Selected E minor
+1,0,1 #Selected E minor
+1,0,1 #Selected E minor
+1,0,1 #Selected E minor
+1,0,1 #Selected E minor
+1,0,1 #Selected E minor
+1,0,8 #Selected E minor-major
+8,0,8 #Selected E minor-major
+8,0,1 #Selected E minor
+1,0,1 #Selected E minor
+1,1,1 #Selected F minor
+1,0,1 #Selected F minor
+1,0,1 #Selected F minor
+1,0,1 #Selected F minor
+1,-4,5 #Selected C# diminished
+5,9,7 #Selected A# half-diminished
+7,0,7 #Selected A# half-diminished
+7,0,7 #Selected A# half-diminished
+7,-5,1 #Selected F minor
+1,0,1 #Selected F minor
+1,-2,4 #Selected D# 7 minor
+4,0,4 #Selected D# 7 minor
+4,-3,4 #Selected C 7 minor
+4,0,4 #Selected C 7 minor
+4,3,2 #Selected D# seven
+2,0,2 #Selected D# seven
+2,4,7 #Selected G half-diminished
+7,0,7 #Selected G half-diminished
+7,-2,7 #Selected F half-diminished
+7,0,7 #Selected F half-diminished
+7,-2,7 #Selected D# half-diminished
+7,0,7 #Selected D# half-diminished
+7,0,7 #Selected D# half-diminished
