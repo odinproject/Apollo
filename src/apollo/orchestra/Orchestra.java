@@ -117,6 +117,7 @@ public class Orchestra {
     
     public void playNextTick()
     {
+//        System.out.println("Bar: " + bar + ", tick: " + tick);
         for (Track track : tracks)
         {
             // get the next tick for the track
@@ -167,9 +168,9 @@ public class Orchestra {
     /**
      * @return how many bars are waiting to be played on the track
      */
-    public int unplayedBars()
+    public int unplayedBarsForTrack(int track)
     {
-        return tracks.get(0).bars.size() - bar;
+        return tracks.get(track).bars.size() - bar;
     }
     
     public void printInstruments(Soundbank soundbank,Instrument[] instruments){
