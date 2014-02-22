@@ -92,20 +92,6 @@ public class Composer {
             newBar.addTick(i, emptyTick);
         }
         
-        // run through the carried-over stops from the previous Bar. Add any
-        // stops that may still exist.
-        for (int i=0; i<nextBarStops.getTicks().length; i++)
-        {
-            Tick tick = nextBarStops.getTicks()[i];
-            for (Note stop : tick.getStops())
-            {
-                newBar.getTick(i).addStop(stop);
-            }
-        }
-        
-        // this is a list of new stops that might carry over into the next chord
-        Tick nextChordStops = new Tick();
-        
         // we limit the chord to a melodic range of MIDDLE_C +- 12
         // it ends up sounding identical to the gaussian anyways
         int melodicRange = 12;
@@ -117,18 +103,11 @@ public class Composer {
             {
                 Note n = new Note((short)pitch, (short)75);
                 newBar.getTick(0).addNote(n);
-                
-                nextChordStops.addStop(n);
             }
+            
+            Note stopNote = new Note((short)pitch, (short)100);
+            newBar.getTick(0).addStop(stopNote);
         }
-        
-        nextBarStops = new Bar();
-        for (int i=1; i<16; i++)
-        {
-            Tick emptyTick = new Tick();
-            nextBarStops.addTick(i, emptyTick);
-        }
-        nextBarStops.addTick(0, nextChordStops);
         
         return newBar;
     }
