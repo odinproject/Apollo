@@ -8,6 +8,7 @@ import java.awt.event.*;
 import javax.swing.JPanel;
 
 import game.gamestate.GameStateManager;
+import java.util.Properties;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener
 {
@@ -28,6 +29,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener
     // image
     private BufferedImage image;
     private Graphics2D g;
+    
+    // game properties
+    private GameProperties properties;
 
     // game state manager
     private GameStateManager gsm;
@@ -63,6 +67,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener
         running = true;
 
         gsm = new GameStateManager(this);
+        properties = new GameProperties(gsm);
+    }
+    
+    public GameProperties getProperties()
+    {
+        return properties;
     }
 
     public void startMusic()
@@ -103,6 +113,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener
 
     private void update() {
         gsm.update();
+        properties.update();
     }
     private void draw() {
         gsm.draw(g);

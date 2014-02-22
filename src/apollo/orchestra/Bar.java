@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Bar {
     
     // 16 ticks in a bar
-    // 4 beats <- 4 ticks in a beat
+    // 4 beats in a bar <- 4 ticks in a beat
     Tick[] ticks;
     
     public Bar()

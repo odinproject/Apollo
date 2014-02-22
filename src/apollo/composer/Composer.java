@@ -56,14 +56,23 @@ public class Composer {
     
     public void update()
     {
-        if (orchestra.unplayedBars() < 1)
+        if (orchestra.unplayedBars() < 1 && properties != null)
         {
             // get cheat chords
             Chord c = nextChordFromCheatData();
             orchestra.addBarToTrack(1, barForChord(c));
             
             // get rhythms
-//            orchestra.addBarToTrack(2, randomRhythm());
+            Bar nextRhythm = new Bar();
+            if (Math.abs(properties.getPlayerSpeed()) > 0)
+            {
+                nextRhythm = mediumRhythm();
+            }
+            else if (properties.getPlayerSpeed() == 0)
+            {
+                nextRhythm = simpleRhythm();
+            }
+            orchestra.addBarToTrack(2, simpleRhythm());
         }
     }
     
@@ -154,4 +163,39 @@ public class Composer {
         }
         return randomRhythm;
     }
+    
+    public Bar simpleRhythm()
+    {
+        Bar simpleRhythm = new Bar();
+
+        for (int i=0; i<16; i++)
+        {
+            Tick t = new Tick();
+            if (i%8 == 0)
+            {
+                Note n = new Note((short)60, (short)200);
+                t.addNote(n);
+            }
+            simpleRhythm.addTick(i, t);
+        }
+        return simpleRhythm;
+    }
+    
+    public Bar mediumRhythm()
+    {
+        Bar simpleRhythm = new Bar();
+
+        for (int i=0; i<16; i++)
+        {
+            Tick t = new Tick();
+            if (i%8 == 0)
+            {
+                Note n = new Note((short)60, (short)200);
+                t.addNote(n);
+            }
+            simpleRhythm.addTick(i, t);
+        }
+        return simpleRhythm;
+    }
+        
 }

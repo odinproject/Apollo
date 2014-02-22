@@ -1,6 +1,7 @@
 package game.gamestate;
 
 import game.GamePanel;
+import game.GameProperties;
 import java.util.ArrayList;
 
 public class GameStateManager
@@ -52,5 +53,22 @@ public class GameStateManager
     public void keyReleased(int k)
     {
         gameStates.get(currentState).keyReleased(k);
+    }
+    
+    public double getPlayerSpeed()
+    {
+        if (currentState == 1)
+        {
+            return ((Level1State)gameStates.get(currentState)).getPlayer().getDX();
+        }
+        else
+        {
+            return 0.0;
+        }
+    }
+    
+    public GameProperties getProperties()
+    {
+        return panel.getProperties();
     }
 }

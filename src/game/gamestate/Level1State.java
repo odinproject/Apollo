@@ -14,7 +14,6 @@ public class Level1State extends GameState {
     private Background bg;
 
     private Player player;
-    private GameProperties properties;
 
     public Level1State(GameStateManager gsm)
     {
@@ -33,8 +32,6 @@ public class Level1State extends GameState {
 
         player = new Player(tileMap);
         player.setPosition(100, 100);
-        
-        properties = new GameProperties(this);
     }
     
     public Player getPlayer()
@@ -51,7 +48,6 @@ public class Level1State extends GameState {
             GamePanel.WIDTH / 2 - player.getx(),
             GamePanel.HEIGHT / 2 - player.gety()
         );
-        properties.update();
     }
 
     public void draw(Graphics2D g)

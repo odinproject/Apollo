@@ -164,8 +164,28 @@ public class Orchestra {
         }
     }
     
+    /**
+     * @return how many bars are waiting to be played on the track
+     */
     public int unplayedBars()
     {
         return tracks.get(0).bars.size() - bar;
+    }
+    
+    public void printInstruments(Soundbank soundbank,Instrument[] instruments){
+        System.out.println("");
+        System.out.println("----------------------------------------------------------------------------");
+        System.out.println("Soundbank name: " + soundbank.getName());
+        System.out.println("Soundbank version: " + soundbank.getVersion());
+        System.out.println("Description: " + soundbank.getDescription());
+        System.out.println("Author:  " + soundbank.getVendor() + ".");
+        System.out.println("Number of instruments: " + soundbank.getInstruments().length);
+
+        for (Instrument i : instruments)
+        {
+            System.out.println(  "Bank="    + i.getPatch().getBank() + 
+                   " Patch="   + i.getPatch().getProgram() +
+                   " Instr.="  + i);
+        }
     }
 }
