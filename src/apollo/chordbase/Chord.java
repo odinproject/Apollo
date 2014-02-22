@@ -80,7 +80,7 @@ public class Chord implements Comparable
      */
     public void addNote(Integer note)
     {
-       if (note < 0 )
+       if (note < 0)
        {
            throw new IllegalArgumentException("A negative note was added to a chord.");
        }

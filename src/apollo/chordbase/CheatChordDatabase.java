@@ -39,6 +39,7 @@ public class CheatChordDatabase extends ChordDatabase
     private final int MINOR_MAJOR = 8;
     
     List<Chord>[] chordList;
+    private int songNumber;
     
     public CheatChordDatabase()
     {
@@ -279,11 +280,16 @@ public class CheatChordDatabase extends ChordDatabase
     
     public Chord getNextChord(int emotiveState) 
     {
-        Chord toReturn = chordList[1].get(thingsDoneSoFar++);
-        if (thingsDoneSoFar == chordList[1].size())
+        Chord toReturn = chordList[songNumber].get(thingsDoneSoFar++);
+        if (thingsDoneSoFar == chordList[songNumber].size())
         {
             thingsDoneSoFar = 0;
         }
         return toReturn;
+    }
+    
+    public void setSongNumber(int songNumber)
+    {
+        this.songNumber = songNumber;
     }
 }

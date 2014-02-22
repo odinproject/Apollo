@@ -56,9 +56,6 @@ public class Orchestra {
     
     private void setupOrchestra()
     {
-        Track t1 = new Track();
-        tracks.add(t1);
-        
         try 
         {
             // initialize the audio player
@@ -69,6 +66,18 @@ public class Orchestra {
             instruments = soundbank.getInstruments();
             midiChannels = synth.getChannels();
             synth.loadAllInstruments(soundbank);
+            
+            Track melody = new Track(0);
+            tracks.add(melody);
+            setTrackInstrument(0, 0);
+
+            Track backgroundChords = new Track(1);
+            tracks.add(backgroundChords);
+            setTrackInstrument(1, 51);
+
+            Track percussion = new Track(10);
+            tracks.add(percussion);
+            setTrackInstrument(2, 116);
         }
         catch (MidiUnavailableException ex) 
         {
@@ -112,6 +121,7 @@ public class Orchestra {
         {
             // get the next tick for the track
             Tick t = track.getTick(bar, tick);
+            
             for (Note stop : t.getStops())
             {
                 midiChannels[track.getChannel()].noteOff(stop.getPitch());
@@ -120,21 +130,42 @@ public class Orchestra {
             {
                 midiChannels[track.getChannel()].noteOn(note.getPitch(), note.getVelocity());
             }
-            
-            tick++;
-            
-            // update the current beat
-            if (tick % MAX_BEATS == 0)
-            {
-                beat++;
-            }
-            
-            // update the current tick and bar
-            if (tick == MAX_TICKS)
-            {
-                tick = 0;
-                bar++;
-            }
         }
+        
+        tick++;
+
+        // update the current beat
+        if (tick % MAX_BEATS == 0)
+        {
+            beat++;
+        }
+
+        // update the current tick and bar
+        if (tick == MAX_TICKS)
+        {
+            tick = 0;
+            bar++;
+        }
+    }
+    
+    public void setTrackInstrument(int track, int instrument)
+    {
+        if (track < tracks.size())
+        {
+            midiChannels[tracks.get(track).getChannel()].programChange(instrument);
+        }
+    }
+    
+    public void setTrackChannel(int track, int channel)
+    {
+        if (track < tracks.size())
+        {
+            tracks.get(track).setChannel(channel);
+        }
+    }
+    
+    public int unplayedBars()
+    {
+        return tracks.get(0).bars.size() - bar;
     }
 }

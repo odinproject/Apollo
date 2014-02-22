@@ -9,6 +9,8 @@ package apollo;
 import apollo.chordbase.CheatChordDatabase;
 import apollo.chordbase.Chord;
 import apollo.chordbase.ChordDatabase;
+import apollo.composer.Composer;
+import apollo.orchestra.Orchestra;
 import com.sun.media.sound.SF2Soundbank;
 import com.sun.media.sound.*;
 import java.io.InputStream;
@@ -49,6 +51,9 @@ public class ApolloPlayer
     private ChordDatabase chordDatabase = new CheatChordDatabase();
     int tick = 0;
     
+    private Composer composer;
+    private Orchestra orchestra;
+    
     public ApolloPlayer()
     {
         init();
@@ -65,77 +70,85 @@ public class ApolloPlayer
         window.pack();
         window.setVisible(true);
         
-        try 
-        {
-            // initialize the audio player
-            synth = MidiSystem.getSynthesizer();
-            synth.open();
-            
-            File file = new File("OrchestraRhythm.sf2");
-            //soundbank = MidiSystem.getSoundbank(file); //Uncomment this line to get the "orchestra hits" back.
-            soundbank = synth.getDefaultSoundbank();
-            midiChannel = synth.getChannels();
-            
-            instruments = soundbank.getInstruments();
-            printInstruments(soundbank, instruments);
-            
-            System.out.println(soundbank.getName());
-            
-            if (soundbank != null)
-            {
-                boolean bInstrumentsLoaded = synth.loadAllInstruments(soundbank);
-            }
-            
-            int chordInstrument = 51;
-            int melodyInstrument = 0;
-            
-            midiChannel[0].programChange(chordInstrument);
-            midiChannel[1].programChange(melodyInstrument);
-        } 
-        catch (/*IOException | InvalidMidiDataException | */MidiUnavailableException ex) 
-        {
-            Logger.getLogger(Apollo.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        orchestra = new Orchestra();
+        composer = new Composer(orchestra);
+        
+        
+//        try 
+//        {
+//            // initialize the audio player
+//            synth = MidiSystem.getSynthesizer();
+//            synth.open();
+//            
+//            File file = new File("OrchestraRhythm.sf2");
+//            //soundbank = MidiSystem.getSoundbank(file); //Uncomment this line to get the "orchestra hits" back.
+//            soundbank = synth.getDefaultSoundbank();
+//            midiChannel = synth.getChannels();
+//            
+//            instruments = soundbank.getInstruments();
+//            printInstruments(soundbank, instruments);
+//            
+//            System.out.println(soundbank.getName());
+//            
+//            if (soundbank != null)
+//            {
+//                boolean bInstrumentsLoaded = synth.loadAllInstruments(soundbank);
+//            }
+//            
+//            int chordInstrument = 51;
+//            int melodyInstrument = 0;
+//            
+//            midiChannel[0].programChange(chordInstrument);
+//            midiChannel[1].programChange(melodyInstrument);
+//        } 
+//        catch (/*IOException | InvalidMidiDataException | */MidiUnavailableException ex) 
+//        {
+//            Logger.getLogger(Apollo.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
     
     public void play() 
     {   
+        orchestra.play();
         Timer uploadCheckerTimer = new Timer(true);
-        currentChord = chordDatabase.getNextChord(0);
-        
+//        currentChord = chordDatabase.getNextChord(0);
+//        
         uploadCheckerTimer.scheduleAtFixedRate(
             new TimerTask() 
             {
                 @Override
                 public void run() 
                 {
-                    MusicFuncs.turnOffMelodyNote(midiChannel[1], currentChord, tick);
-                    tick++;
-                    if (tick%4==0)
-                    {
-                        MusicFuncs.turnOffGaussianChord(midiChannel[0], currentChord);
-                        selectNewChord();
-                        MusicFuncs.playGaussianChord(midiChannel[0], currentChord, .5);
-                        if (tick == 8) 
-                        {
-                            tick = 0;
-                        }
-                    }
-                    MusicFuncs.playMelodyNote(midiChannel[1], currentChord, tick, 1);
+                    composer.update();
                 }
-
-            private void selectNewChord() 
-            {
-                //There are two lines below. They represent different ways of selecting chords.
-                
-                //Select based on the current chord number in the GUI.
-                //currentChord = chordDatabase.getChordByNumber(ui.musicValue);
-                
-                //Have the computer select a chord. See the method for further details.
-                currentChord = chordDatabase.getNextChord(game.musicValue);
-            }
-            
-            }, 0, 200);
+            }, 0, 100);
+////                    MusicFuncs.turnOffMelodyNote(midiChannel[1], currentChord, tick);
+//                    tick++;
+//                    if (tick%4==0)
+//                    {
+//                        MusicFuncs.turnOffGaussianChord(midiChannel[0], currentChord);
+//                        selectNewChord();
+//                        MusicFuncs.playGaussianChord(midiChannel[0], currentChord, .5);
+//                        if (tick == 8) 
+//                        {
+//                            tick = 0;
+//                        }
+//                    }
+////                    MusicFuncs.playMelodyNote(midiChannel[1], currentChord, tick, 1);
+//                }
+//
+//            private void selectNewChord() 
+//            {
+//                //There are two lines below. They represent different ways of selecting chords.
+//                
+//                //Select based on the current chord number in the GUI.
+//                //currentChord = chordDatabase.getChordByNumber(ui.musicValue);
+//                
+//                //Have the computer select a chord. See the method for further details.
+//                currentChord = chordDatabase.getNextChord(game.musicValue);
+//            }
+//            
+//            }, 0, 200);
     }
     
     public void printInstruments(Soundbank soundbank,Instrument[] instruments){

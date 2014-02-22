@@ -22,6 +22,12 @@ public class Track {
         channel = 0;
     }
     
+    public Track(int channel)
+    {
+        bars = new LinkedList<Bar>();
+        this.channel = channel;
+    }
+    
     public Bar getNextBar()
     {
         // retrieves the bar on the FIRST end of the track
@@ -30,7 +36,14 @@ public class Track {
     
     public Tick getTick(int barIndex, int tickIndex)
     {
-        return bars.get(barIndex).getTick(tickIndex);
+        if (barIndex < bars.size())
+        {
+            return bars.get(barIndex).getTick(tickIndex);
+        }
+        else
+        {
+            return new Tick();
+        }   
     }
     
     public void addBar(Bar b)
@@ -42,6 +55,11 @@ public class Track {
     public int getChannel()
     {
         return channel;
+    }
+    
+    public void setChannel(int channel)
+    {
+        this.channel = channel;
     }
     
 }

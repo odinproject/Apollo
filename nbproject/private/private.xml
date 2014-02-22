@@ -2,37 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/game/tilemap/Tile.java</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/resources/Backgrounds/menubg.gif</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/resources/Sprites/Enemies/explosion.gif</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/resources/HUD/hud.gif</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/resources/Sprites/Player/playersprites.gif</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/resources/Sprites/Player/playerspritesalternate.png</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/resources/Tilesets/grasstileset.gif</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/apollo/chordbase/CheatChordDatabase.java</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/game/GamePanel.java</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/resources/Sprites/Enemies/arachnik.gif</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/resources/Sprites/Player/fireball.gif</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/apollo/midideconstructor/ResearchCode2.java</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/game/gamestate/GameStateManager.java</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/apollo/midideconstructor/MidiDataInputStream.java</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/game/entity/Player.java</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/game/entity/Animation.java</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/apollo/chordbase/ChordDatabase.java</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/apollo/ApolloPlayer.java</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/game/gamestate/Level1State.java</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/apollo/midideconstructor/ResearchCode.java</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/apollo/midideconstructor/MidiFileReader.java</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/apollo/midideconstructor/NoteVisualizer.java</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/resources/Sprites/Enemies/slugger.gif</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/apollo/chordbase/Funcs.java</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/apollo/midideconstructor/ExtendedMidiFileFormat.java</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/tests/chordTests.java</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/resources/Backgrounds/menubg.png</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/game/gamestate/MenuState.java</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/apollo/chordbase/Chord.java</file>
-            <file>file:/C:/Users/Talonos/Documents/GitHub/Apollo/src/resources/Backgrounds/grassbg1.png</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

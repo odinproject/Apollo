@@ -22,6 +22,11 @@ public class Bar {
         return ticks[tickNumber];
     }
     
+    public Tick[] getTicks()
+    {
+        return ticks;
+    }
+    
     public void addTick(int index, Tick t)
     {
         ticks[index] = t;
