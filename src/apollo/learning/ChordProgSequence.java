@@ -53,4 +53,28 @@ public class ChordProgSequence {
         tags.add(tag);
     }
     
+    public ArrayList<Integer> getPitches()
+    {
+        return pitchArray;
+    }
+    
+    public ArrayList<Integer> getTypes()
+    {
+        return typeArray;
+    }
+    
+    public ArrayList<String> getTags()
+    {
+        return tags;
+    }
+    
+    public double getEnergy()
+    {
+        return energy;
+    }
+    
+    public double getTension()
+    {
+        return tension;
+    }
 }
