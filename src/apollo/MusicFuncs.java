@@ -99,23 +99,31 @@ public class MusicFuncs
             for (Integer pitch : chord.getNotes())
             {
                 noteNum++;
-//                System.out.println("noteNum: "+noteNum+", pitch: "+pitch+", tick: "+tick);
+                System.out.println("noteNum: "+noteNum+", pitch: "+pitch+", tick: "+tick);
                 if (noteNum == 1 && (tick == 3 || tick == 6))
                 {
                     midiChannel.noteOn(pitch+MIDDLE_C, (int)velocity);
-//                    System.out.println(" - Turning on 1.");
+                    System.out.println(" - Turning on 1.");
                 }
                 if (noteNum == 2 && (tick == 2 || tick == 5 || tick == 8))
                 {
                     midiChannel.noteOn(pitch+MIDDLE_C, (int)velocity);
-//                    System.out.println(" - Turning on 2.");
+                    System.out.println(" - Turning on 2.");
                 }
                 if (noteNum == 3 && (tick == 1 || tick == 4 || tick == 7))
                 {
                     midiChannel.noteOn(pitch+MIDDLE_C, (int)velocity);
-//                    System.out.println(" - Turning on 3.");
+                    System.out.println(" - Turning on 3.");
                 }
             }
+        }
+    }
+
+    public static void turnOffAllNotes(MidiChannel midiChannel) 
+    {
+        for (int pitch = 0; pitch < 128; pitch++)
+        {
+            midiChannel.noteOff(pitch);
         }
     }
     

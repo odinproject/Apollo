@@ -1,0 +1,32 @@
+E:.5,I:.5
+
+1,0,1 #Selected C minor
+1,0,1 #Selected C minor
+1,0,1 #Selected C minor
+1,2,7 #Selected D half-diminished
+7,0,7 #Selected D half-diminished
+7,2,1 #Selected E minor
+1,0,1 #Selected E minor
+1,-2,7 #Selected D half-diminished
+7,5,0 #Selected G major
+0,-7,1 #Selected C minor
+1,5,1 #Selected F minor
+1,0,1 #Selected F minor
+1,-5,1 #Selected C minor
+1,0,1 #Selected C minor
+1,10,0 #Selected A# major
+0,0,0 #Selected A# major
+0,-3,0 #Selected G major
+0,0,1 #Selected G minor
+1,0,1 #Selected G minor
+1,3,1 #Selected A# minor
+1,-5,1 #Selected F minor
+1,3,1 #Selected G# minor
+1,0,1 #Selected G# minor
+1,-4,1 #Selected E minor
+1,-3,1 #Selected C# minor
+1,6,1 #Selected G minor
+1,4,1 #Selected B minor
+1,-9,1 #Selected D minor
+1,2,0 #Selected E major
+0,5,3 #Selected A 7 major

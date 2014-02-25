@@ -1,0 +1,48 @@
+E:1,I:-1
+
+0,0,0 #Selected A# major
+0,-2,0 #Selected G# major
+0,0,0 #Selected G# major
+0,0,0 #Selected G# major
+0,0,0 #Selected G# major
+0,-3,4 #Selected F 7 minor
+4,0,4 #Selected F 7 minor
+4,0,4 #Selected F 7 minor
+4,3,0 #Selected G# major
+0,-2,0 #Selected F# major
+0,0,3 #Selected F# 7 major
+3,0,0 #Selected F# major
+0,0,3 #Selected F# 7 major
+3,-1,1 #Selected F minor
+1,0,4 #Selected F 7 minor
+4,0,4 #Selected F 7 minor
+4,0,4 #Selected F 7 minor
+4,1,0 #Selected F# major
+0,0,3 #Selected F# 7 major
+3,0,0 #Selected F# major
+0,0,3 #Selected F# 7 major
+3,2,0 #Selected G# major
+0,0,0 #Selected G# major
+0,-3,2 #Selected F seven
+2,0,2 #Selected F seven
+2,5,0 #Selected A# major
+0,0,0 #Selected A# major
+0,0,0 #Selected A# major
+0,0,0 #Selected A# major
+0,0,0 #Selected A# major
+0,0,0 #Selected A# major
+0,0,0 #Selected A# major
+0,0,0 #Selected A# major
+0,-5,4 #Selected F 7 minor
+4,0,4 #Selected F 7 minor
+4,0,4 #Selected F 7 minor
+4,5,2 #Selected A# seven
+2,-2,0 #Selected G# major
+0,0,0 #Selected G# major
+0,0,0 #Selected G# major
+0,0,0 #Selected G# major
+0,2,1 #Selected A# minor
+1,0,1 #Selected A# minor
+1,0,1 #Selected A# minor
+1,0,1 #Selected A# minor
+1,0,1 #Selected A# minor

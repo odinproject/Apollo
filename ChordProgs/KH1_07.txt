@@ -1,0 +1,65 @@
+E:1,I:-.5
+combat
+4,-7,1 #Selected D minor
+1,-2,0 #Selected C major
+0,10,0 #Selected A# major
+0,-5,0 #Selected F major
+0,-3,1 #Selected D minor
+1,-2,0 #Selected C major
+0,7,4 #Selected G 7 minor
+4,0,1 #Selected G minor
+1,0,1 #Selected G minor
+1,-7,0 #Selected C major
+0,0,0 #Selected C major
+0,10,0 #Selected A# major
+0,0,0 #Selected A# major
+0,-10,0 #Selected C major
+0,0,0 #Selected C major
+0,10,0 #Selected A# major
+0,0,0 #Selected A# major
+0,-10,0 #Selected C major
+0,0,0 #Selected C major
+0,10,0 #Selected A# major
+0,0,0 #Selected A# major
+0,-10,0 #Selected C major
+0,0,2 #Selected C seven
+2,0,0 #Selected C major
+0,1,5 #Selected C# diminished
+5,-1,0 #Selected C major
+0,0,0 #Selected C major
+0,10,0 #Selected A# major
+0,0,0 #Selected A# major
+0,-10,0 #Selected C major
+0,0,0 #Selected C major
+0,10,0 #Selected A# major
+0,0,0 #Selected A# major
+0,-10,0 #Selected C major
+0,0,0 #Selected C major
+0,10,0 #Selected A# major
+0,0,0 #Selected A# major
+0,-2,0 #Selected G# major
+0,0,0 #Selected G# major
+0,2,0 #Selected A# major
+0,0,0 #Selected A# major
+0,1,0 #Selected B major
+0,0,0 #Selected B major
+0,-10,0 #Selected C# major
+0,0,0 #Selected C# major
+0,2,0 #Selected D# major
+0,0,0 #Selected D# major
+0,0,0 #Selected D# major
+0,0,0 #Selected D# major
+0,-3,4 #Selected C 7 minor
+4,0,0 #Selected C major
+0,0,0 #Selected C major
+0,0,0 #Selected C major
+0,0,2 #Selected C seven
+2,10,1 #Selected A# minor
+1,0,1 #Selected A# minor
+1,0,1 #Selected A# minor
+1,-10,4 #Selected C 7 minor
+4,0,4 #Selected C 7 minor
+4,3,0 #Selected D# major
+0,7,1 #Selected A# minor
+1,-10,0 #Selected C major
+0,0,2 #Selected C seven

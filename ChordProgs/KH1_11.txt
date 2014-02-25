@@ -1,0 +1,38 @@
+E:1,I:-.5
+
+0,0,0 #Selected C# major
+0,0,0 #Selected C# major
+0,0,0 #Selected C# major
+0,0,0 #Selected C# major
+0,0,0 #Selected C# major
+0,0,0 #Selected C# major
+0,5,4 #Selected F# 7 minor
+4,3,0 #Selected A major
+0,-3,4 #Selected F# 7 minor
+4,3,0 #Selected A major
+0,-8,0 #Selected C# major
+0,0,0 #Selected C# major
+0,0,0 #Selected C# major
+0,0,0 #Selected C# major
+0,5,4 #Selected F# 7 minor
+4,3,0 #Selected A major
+0,-3,4 #Selected F# 7 minor
+4,3,0 #Selected A major
+0,-7,3 #Selected D 7 major
+3,0,0 #Selected D major
+0,5,3 #Selected G 7 major
+3,0,0 #Selected G major
+0,-2,0 #Selected F major
+0,-3,1 #Selected D minor
+1,0,0 #Selected D major
+0,2,4 #Selected E 7 minor
+4,-4,3 #Selected C 7 major
+3,0,0 #Selected C major
+0,9,1 #Selected A minor
+1,-9,0 #Selected C major
+0,11,0 #Selected B major
+0,0,0 #Selected B major
+0,0,0 #Selected B major
+0,-10,0 #Selected C# major
+0,0,0 #Selected C# major
+0,0,0 #Selected C# major

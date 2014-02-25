@@ -1,0 +1,35 @@
+E:-1,I:.5
+dungeon
+5,3,4 #Selected E 7 minor
+4,-3,1 #Selected C# minor
+1,1,5 #Selected D diminished
+5,0,5 #Selected D diminished
+5,2,0 #Selected E major
+0,0,2 #Selected E seven
+2,4,8 #Selected G# minor-major
+8,0,3 #Selected G# 7 major
+3,0,3 #Selected G# 7 major
+3,-1,2 #Selected G seven
+2,-2,4 #Selected F 7 minor
+4,-3,7 #Selected D half-diminished
+7,-2,8 #Selected C minor-major
+8,0,1 #Selected C minor
+1,1,7 #Selected C# half-diminished
+7,0,5 #Selected C# diminished
+5,3,4 #Selected E 7 minor
+4,-3,1 #Selected C# minor
+1,1,5 #Selected D diminished
+5,0,5 #Selected D diminished
+5,2,0 #Selected E major
+0,0,2 #Selected E seven
+2,4,8 #Selected G# minor-major
+8,0,3 #Selected G# 7 major
+3,0,3 #Selected G# 7 major
+3,-1,2 #Selected G seven
+2,-2,4 #Selected F 7 minor
+4,-3,7 #Selected D half-diminished
+7,-2,8 #Selected C minor-major
+8,0,1 #Selected C minor
+1,1,7 #Selected C# half-diminished
+7,6,4 #Selected G 7 minor
+4,-3,4 #Selected E 7 minor

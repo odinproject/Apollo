@@ -19,6 +19,7 @@ import java.util.TreeMap;
 public class DeconstructedPossibility 
 {
     public List<List<ChordConfidences>> halfMeasures = new ArrayList<>();
+    public List<double[]> sampleWeights = new ArrayList<>();
     
     public Map<Chord, Double> getVoteOnMeasure(int segmentNum)
     {
@@ -26,6 +27,10 @@ public class DeconstructedPossibility
         List<ChordConfidences> segment = halfMeasures.get(segmentNum);
         for (ChordConfidences cc : segment)
         {
+            if (cc.chord == null)
+            {
+                continue;
+            }
             if (!toReturn.containsKey(cc.chord))
             {
                 toReturn.put(cc.chord, 0.0);
@@ -44,5 +49,10 @@ public class DeconstructedPossibility
             toReturn+="  "+c.getName()+": "+((double)Math.round(votes.get(c)*10000)/100.0)+".\n";
         }
         return toReturn;
+    }
+
+    List<double[]> getSampleWeights() 
+    {
+        return sampleWeights;
     }
 }

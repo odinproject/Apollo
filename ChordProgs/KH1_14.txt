@@ -1,0 +1,35 @@
+E:.5,I:1
+combat
+1,0,1 #Selected C# minor
+1,0,1 #Selected C# minor
+1,0,1 #Selected C# minor
+1,2,7 #Selected D# half-diminished
+7,0,7 #Selected D# half-diminished
+7,5,1 #Selected G# minor
+1,-5,4 #Selected D# 7 minor
+4,-2,1 #Selected C# minor
+1,0,1 #Selected C# minor
+1,0,4 #Selected C# 7 minor
+4,9,7 #Selected A# half-diminished
+7,-9,1 #Selected C# minor
+1,0,1 #Selected C# minor
+1,0,4 #Selected C# 7 minor
+4,2,7 #Selected D# half-diminished
+7,0,4 #Selected D# 7 minor
+4,0,4 #Selected D# 7 minor
+4,-2,1 #Selected C# minor
+1,0,1 #Selected C# minor
+1,2,7 #Selected D# half-diminished
+7,0,7 #Selected D# half-diminished
+7,0,7 #Selected D# half-diminished
+7,-2,4 #Selected C# 7 minor
+4,2,4 #Selected D# 7 minor
+4,0,4 #Selected D# 7 minor
+4,-2,1 #Selected C# minor
+1,2,4 #Selected D# 7 minor
+4,0,7 #Selected D# half-diminished
+7,0,7 #Selected D# half-diminished
+7,-2,4 #Selected C# 7 minor
+4,2,4 #Selected D# 7 minor
+4,3,0 #Selected F# major
+0,0,0 #Selected F# major

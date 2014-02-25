@@ -1,5 +1,6 @@
 E:-1,I:.5
 dungeon
+1,0,1 #This one had a lot of subtle, short changes, so I had to raise the resolution a bit.
 1,0,1 #Selected A minor
 1,0,1 #Selected A minor
 1,0,1 #Selected A minor

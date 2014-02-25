@@ -7,6 +7,7 @@
 package apollo.midideconstructor;
 
 import apollo.chordbase.ChordDatabase;
+import apollo.chordbase.Funcs;
 import edu.columbia.ee.csmit.MidiKaraoke.MidiMessage.MidiCommand;
 import edu.columbia.ee.csmit.MidiKaraoke.MidiMessage.NoteOff;
 import edu.columbia.ee.csmit.MidiKaraoke.MidiMessage.NoteOn;
@@ -29,11 +30,26 @@ public class Deconstructor
 {
     static ChordDatabase d = new ChordDatabase();
     
-    static int samplesPerBeat = CONSTS.SAMPLES_PER_BEAT;
-    static int beatsPerSegment = CONSTS.BEATS_PER_SEGMENT;
+    private int samplesPerBeat;
+    private int beatsPerSegment;
+    private int endOfSong;
+    private int segmentOffset;
+
+    public Deconstructor(int samplesPerBeat, int beatsPerSegment, int endOfSong, int pulseOffset)
+    {
+        this.samplesPerBeat = samplesPerBeat;
+        this.beatsPerSegment = beatsPerSegment;
+        this.endOfSong = endOfSong;
+        this.segmentOffset = pulseOffset;
+    }
+    
+
     
     public DeconstructedPossibility deconstruct(Track[] tracks, double ppq)
     {
+        
+        List<double[]> sampleWeights = new ArrayList<>();
+        
         //Have a bunch of weights for different points in the song.
         //Array, because there is also a track (First) and a tailsize (second)
         Map<Integer, double[]>[][] songWeights = new TreeMap[tracks.length][4];
@@ -51,7 +67,6 @@ public class Deconstructor
         Map<Integer, Integer> currentlyHeldNotes = new TreeMap<>();
     
         //Prepare the buffers.
-        int endOfSong = CONSTS.END_OF_SONG;
         for (int z = 0; z < endOfSong+ppq; z+=((int)ppq/samplesPerBeat))
         {
             for (int y = 0; y < 4; y++)
@@ -95,9 +110,10 @@ public class Deconstructor
         //Once we get to here, songWeights is full. Every ppq/16 step has a map entry with
         //a set of song weights.
         DeconstructedPossibility toReturn = new DeconstructedPossibility();
-        int pulsesThisSegmentSoFar = 0;
+        int pulsesThisSegmentSoFar = -1*segmentOffset;
         List<ChordConfidences> segment = new ArrayList<>();
         int modesPicked[] = new int[4];
+        
         for (int pulses = 0; pulses <= endOfSong; pulses+= ppq/samplesPerBeat)
         {
             //Get four different confidences.
@@ -109,6 +125,7 @@ public class Deconstructor
             int modePicked = -1;
             for (int mode = 0; mode < 4; mode++)
             {
+                //Funcs.printArray(weights[mode]);
                 ChordConfidences proposedCC = d.getChordWithConfidence(weights[mode]);
                 if (proposedCC.confidence > bestSoFar)
                 {
@@ -119,9 +136,10 @@ public class Deconstructor
             }
             modesPicked[modePicked]++;
             segment.add(cc);
+            sampleWeights.add(weights[modePicked]);
             //If we're at the end of a segment, save it.
             pulsesThisSegmentSoFar++;
-            if (pulsesThisSegmentSoFar%(samplesPerBeat*beatsPerSegment)==0)
+            if ((pulsesThisSegmentSoFar)%(samplesPerBeat*beatsPerSegment)==0&&pulsesThisSegmentSoFar!=0)
             {
                 toReturn.halfMeasures.add(segment);
                 segment = new ArrayList<>();
@@ -131,10 +149,12 @@ public class Deconstructor
         
         System.out.println("Most successful modes:");
         System.out.println("  "+modesPicked[0]+", "+modesPicked[1]+", "+modesPicked[2]+", "+modesPicked[3]);
+        
+        toReturn.sampleWeights = sampleWeights;
         return toReturn;
     }
 
-    private static void handleNoteRelease(Map<Integer, Integer> currentlyHeldNotes, Map<Integer, double[]>[] songWeights, int noteNumber, int endTime, int timeStep, int ppq, int endOfSong)
+    private void handleNoteRelease(Map<Integer, Integer> currentlyHeldNotes, Map<Integer, double[]>[] songWeights, int noteNumber, int endTime, int timeStep, int ppq, int endOfSong)
     {
         for (int x = 0; x < 4; x++)
         {
@@ -145,7 +165,7 @@ public class Deconstructor
     
     
     
-    private static void handleNoteRelease(Map<Integer, Integer> currentlyHeldNotes, Map<Integer, double[]> songWeights, int noteNumber, int endTime, int timeStep, int ppq, int endOfSong, int mode) 
+    private void handleNoteRelease(Map<Integer, Integer> currentlyHeldNotes, Map<Integer, double[]> songWeights, int noteNumber, int endTime, int timeStep, int ppq, int endOfSong, int mode) 
     {
         double extendRatio = .82;
         double previousRatio = .5;
