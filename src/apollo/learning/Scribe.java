@@ -62,59 +62,61 @@ public class Scribe {
         }
     }
     
+    public 
+    
     /**
      * get the pitch index in the ChordDatabase for the given chord name
-     * @param chordName
-     * @return 
+     * @param chordName the string value representing a chord's pitch (A, B, C...)
+     * @return the ChordDatabase index for the given pitch
      */
     public int chordPitchIndexForString(String chordName)
     {
         int chordPitchType = 0;
-        if (chordName.equals("C"))
+        if (chordName.equalsIgnoreCase("C"))
         {
             chordPitchType = 0;
         }
-        else if (chordName.equals("C#"))
+        else if (chordName.equalsIgnoreCase("C#"))
         {
             chordPitchType = 1;
         }
-        else if (chordName.equals("D"))
+        else if (chordName.equalsIgnoreCase("D"))
         {
             chordPitchType = 2;
         }
-        else if (chordName.equals("D#"))
+        else if (chordName.equalsIgnoreCase("D#"))
         {
             chordPitchType = 3;
         }
-        else if (chordName.equals("E"))
+        else if (chordName.equalsIgnoreCase("E"))
         {
             chordPitchType = 4;
         }
-        else if (chordName.equals("F"))
+        else if (chordName.equalsIgnoreCase("F"))
         {
             chordPitchType = 5;
         }
-        else if (chordName.equals("F#"))
+        else if (chordName.equalsIgnoreCase("F#"))
         {
             chordPitchType = 6;
         }
-        else if (chordName.equals("G"))
+        else if (chordName.equalsIgnoreCase("G"))
         {
             chordPitchType = 7;
         }
-        else if (chordName.equals("G#"))
+        else if (chordName.equalsIgnoreCase("G#"))
         {
             chordPitchType = 8;
         }
-        else if (chordName.equals("A"))
+        else if (chordName.equalsIgnoreCase("A"))
         {
             chordPitchType = 9;
         }
-        else if (chordName.equals("A#"))
+        else if (chordName.equalsIgnoreCase("A#"))
         {
             chordPitchType = 10;
         }
-        else if (chordName.equals("B"))
+        else if (chordName.equalsIgnoreCase("B"))
         {
             chordPitchType = 11;
         }
@@ -128,46 +130,46 @@ public class Scribe {
     
     /**
      * get the type index in the ChordDatabase for the given chord type
-     * @param chordType
-     * @return 
+     * @param chordType the string value representing a chord type (minor, major...)
+     * @return the ChordDatabase index for the given type
      */
     public int chordTypeIndexForString(String chordType)
     {
         int chordTypeIndex = 0;
         
-        if (chordType.equals("major"))
+        if (chordType.equalsIgnoreCase("major"))
         {
             chordTypeIndex = 0;
         }
-        else if (chordType.equals("minor"))
+        else if (chordType.equalsIgnoreCase("minor"))
         {
             chordTypeIndex = 1;
         }
-        else if (chordType.equals("seven"))
+        else if (chordType.equalsIgnoreCase("seven"))
         {
             chordTypeIndex = 2;
         }
-        else if (chordType.equals("7 major"))
+        else if (chordType.equalsIgnoreCase("7 major"))
         {
             chordTypeIndex = 3;
         }
-        else if (chordType.equals("7 minor"))
+        else if (chordType.equalsIgnoreCase("7 minor"))
         {
             chordTypeIndex = 4;
         }
-        else if (chordType.equals("diminished"))
+        else if (chordType.equalsIgnoreCase("diminished"))
         {
             chordTypeIndex = 5;
         }
-        else if (chordType.equals("augmented"))
+        else if (chordType.equalsIgnoreCase("augmented"))
         {
             chordTypeIndex = 6;
         }
-        else if (chordType.equals("half-diminished"))
+        else if (chordType.equalsIgnoreCase("half-diminished"))
         {
             chordTypeIndex = 7;
         }
-        else if (chordType.equals("minor-major"))
+        else if (chordType.equalsIgnoreCase("minor-major"))
         {
             chordTypeIndex = 8;
         }
