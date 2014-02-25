@@ -1,3 +1,5 @@
+package apollo.learning;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -10,8 +12,11 @@ import java.util.ArrayList;
  *
  * @author Martin
  */
-public class Scribe {
+public class Scribe
+{
     
+    // The scribe can read and write files, and translate text into data 
+    // structures for the learning algorithms
     public Scribe()
     {
         
@@ -59,6 +64,71 @@ public class Scribe {
                     // Ignore issues during closing
                 }
             }
+        }
+    }
+    
+    public void extractDataFromChordProgressionFile(String fileName)
+    {
+        ArrayList<Integer> pitchArray  = new ArrayList();
+        ArrayList<Integer> typeArray = new ArrayList();
+        ArrayList<String> tags  = new ArrayList();
+        
+        double energy;
+        double tension;
+        
+        ArrayList<String> lines = readTextFile(fileName);
+        int lineCount = 0;
+        for (String line : lines)
+        {
+            // first line, set energy and tension
+            if (lineCount == 0)
+            {
+                String[] components = line.split(",");
+                energy = Double.parseDouble(components[0].substring(2));
+                tension = Double.parseDouble(components[1].substring(3));
+//                
+            }
+            else if (lineCount == 1)
+            {
+                String[] components = line.split(",");
+                for (int i=0; i<components.length; i++)
+                {
+                    tags.add(components[i]);
+                }
+            }
+            else
+            {
+                String[] block = line.split("#");
+                
+                // if the line contained a 'sharp'
+                if (block.length > 2)
+                {
+                    // merge the first and second blocks
+                    block[1] = block[1]+block[2];
+                }
+                
+                String[] components = block[0].split("\\s+");
+                // parse the pitch transition and type transition
+                String[] data = components[0].split(",");
+                int initialType = Integer.parseInt(data[0]);
+                int pitchTransition = Integer.parseInt(data[1]);
+                int finalType = Integer.parseInt(data[2]);
+                
+                // extract the single chord pitch and type
+                String[] chordData = block[1].split("\\s+");
+                if (chordData.length > 3)
+                {
+                    chordData[2] = chordData[2] + " " + chordData[3];
+                }
+                int pitch = chordPitchIndexForString(chordData[1]);
+                int type = chordTypeIndexForString(chordData[2]);
+                
+                pitchArray.add(pitch);
+                typeArray.add(type);
+            }
+            
+//            System.out.println(components[0]);
+            lineCount++;
         }
     }
     
@@ -173,7 +243,7 @@ public class Scribe {
         }
         else
         {
-            System.out.println("REACTOR FAILURE IN THE PRIMARY ENGINE ROOM!");
+            System.out.println("REACTOR FAILURE IN THE PRIMARY ENGINE ROOM! : " + chordType);
         }
         
         return chordTypeIndex;
