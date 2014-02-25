@@ -62,8 +62,6 @@ public class Scribe {
         }
     }
     
-    public 
-    
     /**
      * get the pitch index in the ChordDatabase for the given chord name
      * @param chordName the string value representing a chord's pitch (A, B, C...)

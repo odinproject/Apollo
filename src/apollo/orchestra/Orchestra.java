@@ -1,12 +1,15 @@
 package apollo.orchestra;
 
 import apollo.Apollo;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.midi.Instrument;
+import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
@@ -37,7 +40,6 @@ public class Orchestra {
     
     private Synthesizer synth;
     private MidiChannel[] midiChannels;
-    private Instrument[] instruments;
     
     public Orchestra()
     {
@@ -62,10 +64,12 @@ public class Orchestra {
             synth = MidiSystem.getSynthesizer();
             synth.open();
             
-            Soundbank soundbank = synth.getDefaultSoundbank();
-            instruments = soundbank.getInstruments();
+//            Soundbank defaultSoundbank = synth.getDefaultSoundbank();
+            File f= new File("Soundfonts/Famicom.sf2");
+            Soundbank famicomSoundbank = MidiSystem.getSoundbank(f);
             midiChannels = synth.getChannels();
-            synth.loadAllInstruments(soundbank);
+//            synth.loadAllInstruments(defaultSoundbank);
+            synth.loadAllInstruments(famicomSoundbank);
             
             Track melody = new Track(0);
             tracks.add(melody);
@@ -73,13 +77,13 @@ public class Orchestra {
 
             Track backgroundChords = new Track(1);
             tracks.add(backgroundChords);
-            setTrackInstrument(1, 51);
+            setTrackInstrument(1, 5); // Famicom 5 is nice, game-y chord instrument
 
             Track percussion = new Track(10);
             tracks.add(percussion);
-            setTrackInstrument(2, 116);
+            setTrackInstrument(2, 116); // Default 116 is the best rhythm so far...
         }
-        catch (MidiUnavailableException ex) 
+        catch (IOException | InvalidMidiDataException | MidiUnavailableException ex) 
         {
             Logger.getLogger(Apollo.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -183,6 +187,17 @@ public class Orchestra {
         System.out.println("Number of instruments: " + soundbank.getInstruments().length);
 
         for (Instrument i : instruments)
+        {
+            System.out.println(  "Bank="    + i.getPatch().getBank() + 
+                   " Patch="   + i.getPatch().getProgram() +
+                   " Instr.="  + i);
+        }
+    }
+    
+    public void printCurrentInstruments()
+    {
+        Instrument[] loadedInstruments = synth.getLoadedInstruments();
+        for (Instrument i : loadedInstruments)
         {
             System.out.println(  "Bank="    + i.getPatch().getBank() + 
                    " Patch="   + i.getPatch().getProgram() +

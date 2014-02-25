@@ -45,6 +45,8 @@ public class Composer {
             nextBarStops.addTick(i, emptyTick);
         }
         
+        orchestra.printCurrentInstruments();
+        
         Chord c = nextChordFromCheatData();
         orchestra.addBarToTrack(1, barForChord(c));
     }
@@ -65,7 +67,6 @@ public class Composer {
         
         if (orchestra.unplayedBarsForTrack(2)< 1 && properties != null)
         {
-            System.out.println("ADDBAR");
             // get rhythms
             Bar nextRhythm = new Bar();
             if (Math.abs(properties.getPlayerSpeed()) > 0)
