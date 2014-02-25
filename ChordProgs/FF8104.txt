@@ -1,4 +1,4 @@
-E:1,I.5
+E:1,I:.5
 combat
 2,5,0 #Selected G major
 0,-5,6 #Selected D augmented

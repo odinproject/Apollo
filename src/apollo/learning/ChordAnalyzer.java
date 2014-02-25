@@ -13,9 +13,14 @@ public class ChordAnalyzer
         scribe = new Scribe();
     }
     
-    public void analyzeChords()
+    public void analyzeFile(String fileName)
     {
-        // Extract all variables
-        scribe.extractDataFromChordProgressionFile("ChordProgs/Aeris.txt");
+        ChordProgSequence sequence = scribe.extractDataFromChordProgressionFile(fileName);
+        analyzeSequence(sequence);
+    }
+    
+    private void analyzeSequence(ChordProgSequence sequence)
+    {
+        
     }
 }

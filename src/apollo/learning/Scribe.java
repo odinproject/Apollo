@@ -67,14 +67,9 @@ public class Scribe
         }
     }
     
-    public void extractDataFromChordProgressionFile(String fileName)
+    public ChordProgSequence extractDataFromChordProgressionFile(String fileName)
     {
-        ArrayList<Integer> pitchArray  = new ArrayList();
-        ArrayList<Integer> typeArray = new ArrayList();
-        ArrayList<String> tags  = new ArrayList();
-        
-        double energy;
-        double tension;
+        ChordProgSequence sequence = new ChordProgSequence();
         
         ArrayList<String> lines = readTextFile(fileName);
         int lineCount = 0;
@@ -84,16 +79,15 @@ public class Scribe
             if (lineCount == 0)
             {
                 String[] components = line.split(",");
-                energy = Double.parseDouble(components[0].substring(2));
-                tension = Double.parseDouble(components[1].substring(3));
-//                
+                sequence.setEnergy(Double.parseDouble(components[0].substring(2)));
+                sequence.setTension(Double.parseDouble(components[1].substring(3))); 
             }
             else if (lineCount == 1)
             {
                 String[] components = line.split(",");
                 for (int i=0; i<components.length; i++)
                 {
-                    tags.add(components[i]);
+                    sequence.addTag(components[i]);
                 }
             }
             else
@@ -103,7 +97,7 @@ public class Scribe
                 // if the line contained a 'sharp'
                 if (block.length > 2)
                 {
-                    // merge the first and second blocks
+                    // merge the second and third blocks
                     block[1] = block[1]+block[2];
                 }
                 
@@ -116,20 +110,24 @@ public class Scribe
                 
                 // extract the single chord pitch and type
                 String[] chordData = block[1].split("\\s+");
+                // if it's one of those chords with mutli-word names (7 minor...)
                 if (chordData.length > 3)
                 {
+                    // merge the third and fourth blocks
                     chordData[2] = chordData[2] + " " + chordData[3];
                 }
+                
                 int pitch = chordPitchIndexForString(chordData[1]);
                 int type = chordTypeIndexForString(chordData[2]);
-                
-                pitchArray.add(pitch);
-                typeArray.add(type);
+               
+                sequence.addPitch(pitch);
+                sequence.addType(type);
             }
             
-//            System.out.println(components[0]);
             lineCount++;
         }
+        
+        return sequence;
     }
     
     /**
