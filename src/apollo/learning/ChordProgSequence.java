@@ -14,18 +14,20 @@ import java.util.ArrayList;
  */
 public class ChordProgSequence {
     
-    private ArrayList<Integer> pitchArray  = new ArrayList();
-    private ArrayList<Integer> typeArray = new ArrayList();
-    private ArrayList<String> tags  = new ArrayList();
+    private ArrayList<Integer> pitchArray;
+    private ArrayList<Integer> typeArray;
+    private ArrayList<Integer> relativePitchTransitionArray;
+    private ArrayList<String> tags;
     
     private double energy;
     private double tension;
     
-    public void ChordProgSequence()
+    public ChordProgSequence()
     {
-        pitchArray = new ArrayList<Integer>();
-        typeArray = new ArrayList<Integer>();
-        tags = new ArrayList<String>();
+        pitchArray = new ArrayList();
+        typeArray = new ArrayList();
+        relativePitchTransitionArray = new ArrayList();
+        tags = new ArrayList();
     }
     
     public void setEnergy(double energy)
@@ -48,6 +50,11 @@ public class ChordProgSequence {
         typeArray.add(type);
     }
     
+    public void addRelativePitchTransition(int transition)
+    {
+        relativePitchTransitionArray.add(transition);
+    }
+    
     public void addTag(String tag)
     {
         tags.add(tag);
@@ -61,6 +68,11 @@ public class ChordProgSequence {
     public ArrayList<Integer> getTypes()
     {
         return typeArray;
+    }
+    
+    public ArrayList<Integer> getRelativePitchTransitions()
+    {
+        return relativePitchTransitionArray;
     }
     
     public ArrayList<String> getTags()

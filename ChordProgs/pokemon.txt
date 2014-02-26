@@ -1,4 +1,4 @@
-E:.5, I:0
+E:.5,I:0
 
 0,0,0 #Selected G major
 0,0,0 #Selected G major

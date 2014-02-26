@@ -1,4 +1,4 @@
-E:-.5, I:-1
+E:-.5,I:-1
 peace
 0,0,0 #Selected D major
 0,7,1 #Selected A minor

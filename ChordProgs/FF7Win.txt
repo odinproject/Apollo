@@ -1,4 +1,4 @@
-E:.5, I:-.5
+E:.5,I:-.5
 victory
 3,0,3 #Selected G# 7 major
 3,-6,4 #Selected D 7 minor

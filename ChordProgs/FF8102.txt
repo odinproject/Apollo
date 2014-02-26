@@ -1,4 +1,4 @@
-E:-1, I:-1
+E:-1,I:-1
 village
 3,0,0 #Selected F major
 0,0,0 #Selected F major

@@ -80,7 +80,7 @@ public class Scribe
             {
                 String[] components = line.split(",");
                 sequence.setEnergy(Double.parseDouble(components[0].substring(2)));
-                sequence.setTension(Double.parseDouble(components[1].substring(3))); 
+                sequence.setTension(Double.parseDouble(components[1].substring(2))); 
             }
             else if (lineCount == 1)
             {
@@ -107,6 +107,9 @@ public class Scribe
                 int initialType = Integer.parseInt(data[0]);
                 int pitchTransition = Integer.parseInt(data[1]);
                 int finalType = Integer.parseInt(data[2]);
+                
+                sequence.addRelativePitchTransition(pitchTransition);
+                
                 
                 // extract the single chord pitch and type
                 String[] chordData = block[1].split("\\s+");
