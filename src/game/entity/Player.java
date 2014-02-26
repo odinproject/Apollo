@@ -56,12 +56,12 @@ public class Player extends MapObject {
         cwidth = 35;
         cheight = 62;
 
-        moveSpeed = 0.2;
+        moveSpeed = 0.1;
         // 1.6
         maxWalkSpeed = 1.5;
         maxRunSpeed = 4.0;
         // 0.4
-        stopSpeed = 0.4;
+        stopSpeed = 0.7;
         fallSpeed = 0.15;
         maxFallSpeed = 4.0;
         jumpStart = -5.0;

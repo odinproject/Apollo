@@ -56,6 +56,8 @@ public class Learner
         analyzer.analyzeFile("ChordProgs/KH1_15.txt");
         analyzer.analyzeFile("ChordProgs/KH1_16.txt");
         
+        analyzer.printFindings();
+        
         
         System.out.println("Complete");
     }  
