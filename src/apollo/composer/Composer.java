@@ -86,15 +86,31 @@ public class Composer {
             orchestra.addBarToTrack(1, barForChord(c));
         }
         
+        if (properties.getPlayerXPosition() > -1333.0)
+        {
+            currentTension = -1.0;
+        }
+        else
+        {
+            currentTension = 1.0;
+        }
+        
+        System.out.println(currentTension);
+        
         if (orchestra.unplayedBarsForTrack(2)< 1 && properties != null)
         {
             // get rhythms
+            double speed = Math.abs(properties.getPlayerSpeed());
             Bar nextRhythm = new Bar();
-            if (Math.abs(properties.getPlayerSpeed()) > 0)
+            if (speed > 2)
+            {
+                nextRhythm = intenseRhythm();
+            }
+            else if (speed < 2 && speed > 0)
             {
                 nextRhythm = mediumRhythm();
             }
-            else if (properties.getPlayerSpeed() == 0)
+            else if (speed == 0)
             {
                 nextRhythm = simpleRhythm();
             }
@@ -149,7 +165,7 @@ public class Composer {
         int secondRelativePitch = transposePitch(currentChordPitch, secondClosestRelativePitchIndex - 11);
         
         Random rand = new Random();
-        int closest = rand.nextInt(3);
+        int closest = rand.nextInt(5);
         
 //        Chord nextChord = database.getChordByPitchAndType(relativePitch, closestToTypeIndex);
         Chord nextChord = database.getChordByPitchAndType(relativePitch, closestToTypeIndex);
@@ -240,7 +256,7 @@ public class Composer {
             Tick t = new Tick();
             if (beat == 1)
             {
-                Note n = new Note((short)60, (short)200);
+                Note n = new Note((short)60, (short)300);
                 t.addNote(n);
             }
             randomRhythm.addTick(i, t);
@@ -257,7 +273,7 @@ public class Composer {
             Tick t = new Tick();
             if (i%8 == 0)
             {
-                Note n = new Note((short)60, (short)200);
+                Note n = new Note((short)60, (short)300);
                 t.addNote(n);
             }
             simpleRhythm.addTick(i, t);
@@ -272,14 +288,32 @@ public class Composer {
         for (int i=0; i<16; i++)
         {
             Tick t = new Tick();
-            if (i%4 == 0)
+            if (i == 0 || i == 6 || i == 8 || i == 10)
             {
-                Note n = new Note((short)60, (short)200);
+                Note n = new Note((short)60, (short)300);
                 t.addNote(n);
             }
             simpleRhythm.addTick(i, t);
         }
         return simpleRhythm;
+    }
+    
+    public Bar intenseRhythm()
+    {
+        Bar intenseRhythm = new Bar();
+        
+        for (int i=0; i<16; i++)
+        {
+            Tick t = new Tick();
+            if (i == 0 || i == 2 || i == 6 | i == 8 | i == 12 | i == 13 | i == 14)
+            {
+                Note n = new Note((short)60, (short)300);
+                t.addNote(n);
+            }
+            intenseRhythm.addTick(i, t);
+        }
+        
+        return intenseRhythm;
     }
         
 }

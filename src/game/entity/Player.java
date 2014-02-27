@@ -361,4 +361,9 @@ public class Player extends MapObject {
                 (int)(y + ymap - height / 2), 
                 null);
     }	
+    
+    public double getXTemp()
+    {
+        return xmap;
+    }
 }

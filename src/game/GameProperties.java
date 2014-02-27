@@ -14,6 +14,7 @@ public class GameProperties
     
     private GameStateManager gsm;
     private double playerSpeed;
+    private double playerXPosition;
     
     public GameProperties(GameStateManager gsm)
     {
@@ -26,11 +27,17 @@ public class GameProperties
         return playerSpeed;
     }
     
+    public double getPlayerXPosition()
+    {
+        return playerXPosition;
+    }
+    
     // updates all the properties of the game we care about
     public void update()
     {
         // update the player speed property. For now, this is the only property we care about
         playerSpeed = gsm.getPlayerSpeed();
+        playerXPosition = gsm.getPlayerXPosition();
     }
     
 }

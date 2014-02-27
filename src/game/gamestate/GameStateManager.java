@@ -67,6 +67,18 @@ public class GameStateManager
         }
     }
     
+    public double getPlayerXPosition()
+    {
+        if (currentState == 1)
+        {
+            return ((Level1State)gameStates.get(currentState)).getPlayer().getXTemp();
+        }
+        else
+        {
+            return 100.0;
+        }
+    }
+    
     public GameProperties getProperties()
     {
         return panel.getProperties();
