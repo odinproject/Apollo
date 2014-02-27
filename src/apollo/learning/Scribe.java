@@ -108,6 +108,9 @@ public class Scribe
                 int pitchTransition = Integer.parseInt(data[1]);
                 int finalType = Integer.parseInt(data[2]);
                 
+                sequence.addFromType(initialType);
+                sequence.addToType(finalType);
+                
                 sequence.addRelativePitchTransition(pitchTransition);
                 
                 

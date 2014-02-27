@@ -58,7 +58,6 @@ public class Learner
         
         analyzer.printFindings();
         
-        
         System.out.println("Complete");
-    }  
+    }
 }

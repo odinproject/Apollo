@@ -71,15 +71,26 @@ public class ChordAnalyzer
         System.out.println("Raw Pitch Associations:");
         for (int i=0; i<chordPitches[0].length; i++)
         {
-            // i + "," + chordPitches[0][i] + "," + chordPitches[1][i]
-            System.out.println(chordPitches[0][i]);
+             
+            System.out.println(i + "," + chordPitches[0][i] + "," + chordPitches[1][i]);
         }
         
         System.out.println("Raw Type Associations:");
         for (int i=0; i<chordTypes[0].length; i++)
         {
-//            System.out.println(i + "," + chordTypes[0][i] + "," + chordTypes[1][i]);
-            System.out.println(chordTypes[1][i]);
+            System.out.println(i + "," + chordTypes[0][i] + "," + chordTypes[1][i]);
+        }
+        
+        System.out.println("Type Transition Associations:");
+        for (int i=0; i<9; i++)
+        {
+            for (int j=0; j<9; j++)
+            {
+                String comma = "";
+                if (j < 8) comma = ",";
+                System.out.print(chordTypeTransitions[1][i][8]  + comma);
+            }
+            System.out.print("\n");
         }
     }
     
@@ -158,18 +169,38 @@ public class ChordAnalyzer
 //            int fromType = (int)Math.floor(j/9);
 //            int toType = j % 9;
         
+        ArrayList<Integer> fromTypes = sequence.getFromTypes();
+        ArrayList<Integer> toTypes = sequence.getToTypes();
+        
+        // represents the fromType
         for (int i=0; i<9; i++)
         {
-            // j represents the fromType
+            // represents the toType
             for (int j=0; j<9; j++)
             {
-                // k represents the toType
-                for (int k=0; k<9; k++)
+                for (int k=0; k<fromTypes.size(); k++)
                 {
-                    
+                    if (fromTypes.get(k) == i && toTypes.get(k) == j)
+                    {
+                        chordTypeTransitions[0][i][j] = roundDouble((chordTypeTransitions[0][i][j] + energy) / 2, 2);
+                        chordTypeTransitions[1][i][j] = roundDouble((chordTypeTransitions[1][i][j] + tension) / 2, 2);
+                        break;
+                    }
                 }
             }
         }
         
+    }
+    
+    private double roundDouble(double d, int numberOfDecimalPlaces)
+    {
+        double roundFactor = 1.0;
+        
+        for (int i=0; i<numberOfDecimalPlaces; i++)
+        {
+            roundFactor *= 10;
+        }
+        
+        return Math.round(d * roundFactor) / roundFactor;
     }
 }

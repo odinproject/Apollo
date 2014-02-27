@@ -16,6 +16,8 @@ public class ChordProgSequence {
     
     private ArrayList<Integer> pitchArray;
     private ArrayList<Integer> typeArray;
+    private ArrayList<Integer> fromTypeArray;
+    private ArrayList<Integer> toTypeArray;
     private ArrayList<Integer> relativePitchTransitionArray;
     private ArrayList<String> tags;
     
@@ -26,6 +28,8 @@ public class ChordProgSequence {
     {
         pitchArray = new ArrayList();
         typeArray = new ArrayList();
+        fromTypeArray = new ArrayList();
+        toTypeArray = new ArrayList();
         relativePitchTransitionArray = new ArrayList();
         tags = new ArrayList();
     }
@@ -50,6 +54,16 @@ public class ChordProgSequence {
         typeArray.add(type);
     }
     
+    public void addFromType(int type)
+    {
+        fromTypeArray.add(type);
+    }
+    
+    public void addToType(int type)
+    {
+        toTypeArray.add(type);
+    }
+    
     public void addRelativePitchTransition(int transition)
     {
         relativePitchTransitionArray.add(transition);
@@ -68,6 +82,16 @@ public class ChordProgSequence {
     public ArrayList<Integer> getTypes()
     {
         return typeArray;
+    }
+    
+    public ArrayList<Integer> getFromTypes()
+    {
+        return fromTypeArray;
+    }
+    
+    public ArrayList<Integer> getToTypes()
+    {
+        return toTypeArray;
     }
     
     public ArrayList<Integer> getRelativePitchTransitions()
