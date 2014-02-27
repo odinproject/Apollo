@@ -67,6 +67,47 @@ public class Scribe
         }
     }
     
+    public ChordWeights loadWeightsFromFile(String fileName)
+    {
+        ChordWeights weights = new ChordWeights();
+        ArrayList<String> lines = readTextFile(fileName);
+        
+        // we start out in the energy section
+        int section = 0;
+        int fromType = 0;
+        int relativePitchIndex = 0;
+        
+        for (int i=0; i<lines.size(); i++)
+        {
+            String line = lines.get(i);
+            if (line.equalsIgnoreCase("Energy"))
+            {
+                section = 0;
+            }
+            else if (line.equalsIgnoreCase("Tension"))
+            {
+                section = 1;
+            }
+            else if (line.contains("From"))
+            {
+                String[] components = line.split(":");
+                fromType = Integer.parseInt(components[1]);
+                relativePitchIndex = 0;
+            }
+            else
+            {
+                String[] scores = line.split(",");
+                for (int toType=0; toType<scores.length; toType++)
+                {
+                    double score = Double.parseDouble(scores[toType]);
+                    weights.importWeight(section, fromType, relativePitchIndex, toType, score);
+                }
+                relativePitchIndex++;
+            }
+        }
+        return weights;
+    }
+    
     public ChordProgSequence extractDataFromChordProgressionFile(String fileName)
     {
         ChordProgSequence sequence = new ChordProgSequence();

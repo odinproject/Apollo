@@ -166,6 +166,17 @@ public class ChordDatabase
         System.out.println("Returning: "+(i%12)+", "+(i/12));
         return _chordLibrary[i%12][i/12];
     }
+    
+    /**
+     * Gets a chord by the ChordDatabase index for pitch and type
+     * @param pitch C, D, E, F#...
+     * @param type Major, Minor, ...
+     * @return 
+     */
+    public Chord getChordByPitchAndType(int pitch, int type)
+    {
+        return _chordLibrary[pitch][type];
+    }
 
     /**
      * Gets another chord from the database.

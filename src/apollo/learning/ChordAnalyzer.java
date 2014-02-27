@@ -20,10 +20,13 @@ public class ChordAnalyzer
     private Double[][] chordPitches;
     // raw TYPE of each chord (Major, Minor...)
     private Double[][] chordTypes;
-    // raw PITCH AND TYPE of each chord (A# diminished, C minor...)
-//    private Double[][] chordPitch_Types;
     // type transition
     private Double[][][] chordTypeTransitions;
+    // relative pitch transition
+    private Double[][] relativePitchTransitions;
+    
+    // initialType + relativePitchChange + finalType
+    private Double[][][][] superTransitions;
     
     // at the end of analysis, we would like a list of raw variables mapped
     // statistically to their influence on the two identifiers (tension, energy)
@@ -64,31 +67,79 @@ public class ChordAnalyzer
                 }
             }
         }
+        
+        // -11 to 11 (22 in total)
+        // Just +11 to the relative shift stored in the file (1,X,2) 
+        // and you get the relativePitchTransitionIndex
+        relativePitchTransitions = new Double[2][22];
+        
+        for (int i=0; i<2; i++)
+        {
+            for (int j=0; j<22; j++)
+            {
+                relativePitchTransitions[i][j] = 0.0;
+            }
+        }
+        
+        superTransitions = new Double[2][9][22][9];
+        
+        for (int i=0; i<2; i++)
+        {
+            for (int j=0; j<9; j++)
+            {
+                for (int k=0; k<22; k++)
+                {
+                    for (int l=0; l<9; l++)
+                    {
+                        superTransitions[i][j][k][l] = 0.0;
+                    }
+                }
+            }
+        }
     }
     
     public void printFindings()
     {
-        System.out.println("Raw Pitch Associations:");
-        for (int i=0; i<chordPitches[0].length; i++)
+//        System.out.println("Raw Pitch Associations:");
+//        for (int i=0; i<chordPitches[0].length; i++)
+//        {
+//             
+//            System.out.println(i + "," + chordPitches[0][i] + "," + chordPitches[1][i]);
+//        }
+//        
+//        System.out.println("Raw Type Associations:");
+//        for (int i=0; i<chordTypes[0].length; i++)
+//        {
+//            System.out.println(i + "," + chordTypes[0][i] + "," + chordTypes[1][i]);
+//        }
+//        
+//        System.out.println("Type Transition Associations:");
+//        for (int i=0; i<9; i++)
+//        {
+//            for (int j=0; j<9; j++)
+//            {
+//                String comma = "";
+//                if (j < 8) comma = ",";
+//                System.out.print(chordTypeTransitions[1][i][8]  + comma);
+//            }
+//            System.out.print("\n");
+//        }
+//        
+//        System.out.println("Relative Pitch Transition Associations:");
+//        for (int i=0; i<22; i++)
+//        {
+//            System.out.println(relativePitchTransitions[1][i]);
+////            System.out.println((i-11) + "," + relativePitchTransitions[0][i] + "," + relativePitchTransitions[1][i]);
+//        }
+//        
+        System.out.println("Super Transition Associations:");
+        for (int k=0; k<22; k++)
         {
-             
-            System.out.println(i + "," + chordPitches[0][i] + "," + chordPitches[1][i]);
-        }
-        
-        System.out.println("Raw Type Associations:");
-        for (int i=0; i<chordTypes[0].length; i++)
-        {
-            System.out.println(i + "," + chordTypes[0][i] + "," + chordTypes[1][i]);
-        }
-        
-        System.out.println("Type Transition Associations:");
-        for (int i=0; i<9; i++)
-        {
-            for (int j=0; j<9; j++)
+            for (int l=0; l<9; l++)
             {
                 String comma = "";
-                if (j < 8) comma = ",";
-                System.out.print(chordTypeTransitions[1][i][8]  + comma);
+                if (l < 8) comma = ",";
+                System.out.print(superTransitions[1][0][k][l] + comma);
             }
             System.out.print("\n");
         }
@@ -190,6 +241,73 @@ public class ChordAnalyzer
             }
         }
         
+        ////////////////////////////////////////////////////////////////
+        // RELATIVE PITCH TRANSITIONS
+        ////////////////////////////////////////////////////////////////
+        
+        ArrayList<Integer> relativeChordPitchTransitions = sequence.getRelativePitchTransitions();
+        
+        for (int i=0; i<22; i++)
+        {
+            for (int j=0; j<relativeChordPitchTransitions.size(); j++)
+            {
+                if (relativeChordPitchTransitions.get(j)+10 == i)
+                {
+                    relativePitchTransitions[0][i] = roundDouble((relativePitchTransitions[0][i] + energy) / 2, 2);
+                    relativePitchTransitions[1][i] = roundDouble((relativePitchTransitions[1][i] + tension) / 2, 2);
+                }
+            }
+        }
+        
+        ////////////////////////////////////////////////////////////////
+        // SUPER TRANSITIONS
+        ////////////////////////////////////////////////////////////////
+
+        
+        for (int j=0; j<9; j++)
+        {
+            for (int k=0; k<22; k++)
+            {
+                for (int l=0; l<9; l++)
+                {
+                    for (int m=0; m<fromTypes.size(); m++)
+                    {
+                        if (fromTypes.get(m) == j && relativeChordPitchTransitions.get(m)+10 == k && toTypes.get(m) == l)
+                        {
+                            superTransitions[0][j][k][l] = roundDouble((superTransitions[0][j][k][l] + energy) / 2, 2);
+                            superTransitions[1][j][k][l] = roundDouble((superTransitions[1][j][k][l] + tension) / 2, 2);
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    public ChordWeights getWeights()
+    {
+        ChordWeights weights = new ChordWeights();
+        for (int i=0; i<2; i++)
+        {
+            for (int j=0; j<9; j++)
+            {
+                for (int k=0; k<22; k++)
+                {
+                    for (int l=0; l<9; l++)
+                    {
+                        weights.addComprehensiveScore(i, j, k, l, superTransitions[i][j][k][l]);
+                    }
+                }
+            }
+        }
+        return weights;
+    }
+    
+    public void serializeWeights()
+    {
+        ChordWeights weights = getWeights();
+        String weightString = weights.toString();
+        scribe.writeTextToFile("chordweights.txt", weightString);
     }
     
     private double roundDouble(double d, int numberOfDecimalPlaces)
