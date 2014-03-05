@@ -333,6 +333,7 @@ public class ChordDatabase
 
     public ChordConfidences getChordWithConfidence(double[] weights) 
     {
+        weights = weights.clone();
         ChordConfidences toReturn = new ChordConfidences();
         toReturn.chord = this.identifyChord(weights);
         toReturn.confidence = confidence;

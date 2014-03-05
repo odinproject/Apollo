@@ -58,6 +58,7 @@ public class ApolloPlayer
                 @Override
                 public void run() 
                 {
+                    // All the work of selecting a chord and playing it happen in the composer
                     composer.update();
                 }
             }, 0, 100);

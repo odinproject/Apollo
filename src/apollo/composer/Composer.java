@@ -33,45 +33,94 @@ public class Composer {
     // for when composing the next bar
     private Bar nextBarStops;
     
+    // the pitch of the current chord (A, B, C#...), expressed as an integer
+    // with the same format as the ChordDatabase (C = 0, C# = 1, D = 2...)
+    // Ranges from 0 to 11;
     private int currentChordPitch;
+    // the type of the current chord (Major, Minor...), expressed as an integer
+    // with the same format as the ChordDatabase (Major = 0, Minor = 1...)
+    // ranges from 0 to 9
     private int currentChordType;
     
+    // the current energy level of the game
     private double currentEnergy;
+    
+    // the current tension level of the game
     private double currentTension;
     
+    // toggles whether the rhythm should be played
+    private boolean rhythmOn;
+    // togggles whether the chords should be randomly or predictively selected
+    private boolean randomOn;
+    
+    // File I/O
     private Scribe scribe;
     
+    // The actual weights for all possible chord transitions
+    // this contains (among other things) a four-dimensional array called weights
+    // [A][B][C][D]
+    // "A" represents which predictor we are looking at: 0 = Energy, 1 = Tension
+    // "B" represents the start chord type (0 = Major, 1 = Minor, etc...)
+    // "C" represents the pitch shift. This ranges from 0 to 22 (which represents
+    //   the shift ranges -11 through 11. 0 = -11, 1 = -10, w = -9...
+    // "D" represents the end chord type (0 = Major, 2 = Minor, etc...)
+    //   The value in the "D" entry is the average energy (or intensity) for that
+    //   chord transition
     private ChordWeights weights;
     
+    // This is just a copy of the old cheatChordList
     private CheatChordDatabase cheatSheet;
+    // A reference to the chordDatabase to lookup chords for a given pitch/type 
+    // on demand
     private ChordDatabase database;
+   
     public final static Integer MIDDLE_C_OFFSET = 60;
     
+    /**
+     * Constructor
+     * @param o the orchestra to which the music will be sent
+     */
     public Composer (Orchestra o)
     {
+        rhythmOn = true;
+        randomOn = false;
+        
         orchestra = o;
         cheatSheet = new CheatChordDatabase();
         database = new ChordDatabase();
         cheatSheet.setSongNumber(2);
+        
+        // this is currently UNUSED. I will be expanding this soon.
         nextBarStops = new Bar();
         for (int i=0; i<16; i++)
         {
             Tick emptyTick = new Tick();
             nextBarStops.addTick(i, emptyTick);
         }
+        // end of UNUSED code.
         
+        // initialize our File I/O helper
         scribe = new Scribe();
-//        orchestra.printCurrentInstruments();
         
+        // right now we start with whatever chord is first in the cheat sheet
+        // although this could be any chord you want.
         Chord c = nextChordFromCheatData();
         orchestra.addBarToTrack(1, barForChord(c));
         
         currentEnergy = 0.5;
         currentTension = -1.0;
         
+        currentChordPitch = 2;
+        currentChordType = 1;
+        
+        // upload the serialized weights that we learned earlier
         weights = scribe.loadWeightsFromFile("chordweights.txt");
     }
     
+    /**
+     * Get a link to the game's properties, which we may query at any time
+     * @param prop the link to the game's properties
+     */
     public void setGameProperties(GameProperties prop)
     {
         properties = prop;
@@ -82,10 +131,15 @@ public class Composer {
         if (orchestra.unplayedBarsForTrack(1)< 1)
         {
             // get cheat chords
-            Chord c = nextChordForCurrentFactors();
+            Chord c = getRandomChord();
+            if (!randomOn)
+            {
+                c = nextChordForCurrentFactors();
+            }
             orchestra.addBarToTrack(1, barForChord(c));
         }
         
+        // switches tension depending on whether the player is in the cave or forest
         if (properties.getPlayerXPosition() > -1333.0)
         {
             currentTension = -1.0;
@@ -95,9 +149,8 @@ public class Composer {
             currentTension = 1.0;
         }
         
-        System.out.println(currentTension);
-        
-        if (orchestra.unplayedBarsForTrack(2)< 1 && properties != null)
+        // depending on speed, change rhythm between the 3 pre-generated rhythms
+        if (orchestra.unplayedBarsForTrack(2)< 1 && properties != null && rhythmOn)
         {
             // get rhythms
             double speed = Math.abs(properties.getPlayerSpeed());
@@ -118,15 +171,25 @@ public class Composer {
         }
     }
     
-    public Chord nextChordForCurrentFactors()
+    /**
+     * Returns a random chord from the chord database
+     * @return Chord a random chord
+     */
+    public Chord getRandomChord()
     {
-        // find the toType and pitchShift 
-        // that will most closely resemble the desired energy and tension
-        
+        Random rand = new Random();
+        int randomPitchIndex = rand.nextInt(12);
+        int randomTypeIndex = rand.nextInt(9);
+        return database.getChordByPitchAndType(randomPitchIndex, randomTypeIndex);
+    }
+    
+    /**
+     * Our Dynamic Chord Selector
+     * @return Chord the best possible chord for the current game state
+     */
+    public Chord nextChordForCurrentFactors()
+    {   
         Double[][][][] chordWeights = weights.getWeights();
-        
-//        // [1] = tension, [currentChordType] = fromType;
-//        Double[][] relativePitches = chordWeights[1][currentChordType];
         
         // get the type and relative pitch transition that maximizes tension
         int closestToTypeIndex = 0;
@@ -139,7 +202,7 @@ public class Composer {
             
         for (int relativePitchIndex=0; relativePitchIndex<22; relativePitchIndex++)
         {
-            for (int toTypeIndex=0; toTypeIndex<9; toTypeIndex++)
+            for (int toTypeIndex=0; toTypeIndex<8; toTypeIndex++)
             {
                 double score = chordWeights[1][currentChordType][relativePitchIndex][toTypeIndex];
                 if (score == 0.0)
@@ -165,23 +228,29 @@ public class Composer {
         int secondRelativePitch = transposePitch(currentChordPitch, secondClosestRelativePitchIndex - 11);
         
         Random rand = new Random();
-        int closest = rand.nextInt(5);
-        
-//        Chord nextChord = database.getChordByPitchAndType(relativePitch, closestToTypeIndex);
+        int closest = rand.nextInt(3);
+
         Chord nextChord = database.getChordByPitchAndType(relativePitch, closestToTypeIndex);
         currentChordPitch = relativePitch;
         currentChordType = closestToTypeIndex;
         if (closest == 1)
         {
-//            nextChord = database.getChordByPitchAndType(secondRelativePitch, secondClosestToTypeIndex);
             nextChord = database.getChordByPitchAndType(secondRelativePitch, secondClosestToTypeIndex);
             currentChordPitch = secondRelativePitch;
             currentChordType = secondClosestToTypeIndex;
         }
         
+        System.out.println(nextChord);
+        
         return nextChord;
     }
     
+    /**
+     * Given a pitch, and a relative shift ammount, find the new pitch
+     * @param pitch int representation of pitch (C = 0, C# = 1, D = 2...)
+     * @param shift int representation of pitch shift, positive or negative
+     * @return 
+     */
     public int transposePitch(int pitch, int shift)
     {
         int transpose = pitch + shift;
@@ -197,6 +266,11 @@ public class Composer {
         return transpose;
     }
     
+    /**
+     * Create a new bar based on a chord
+     * @param c a chord
+     * @return Bar a bar representation of the input chord
+     */
     public Bar barForChord(Chord c)
     {
         Bar newBar = new Bar();
@@ -245,6 +319,12 @@ public class Composer {
         }
     }
     
+    /**
+     * Create a random rhythm bar
+     * @return Bar a bar containing a random rhythm
+     * WARNING - this bar contains no stops (no NoteOff events) because
+     * many rhythm instruments do not require NoteOff events.
+     */
     public Bar randomRhythm()
     {
         Random random = new Random();
