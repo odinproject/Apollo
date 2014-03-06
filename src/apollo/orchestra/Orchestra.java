@@ -119,6 +119,13 @@ public class Orchestra {
         tracks.get(trackIndex).addBar(b);
     }
     
+    /**
+     * The orchestra operates by retrieving a single tick from a buffer at a time
+     * Each tick may contain noteOn and noteOff signals, and the orchestra simply
+     * responds to whatever is in the current tick.
+     * Think of it like a conveyor belt of musical score (Guitar Hero) with a full
+     * orchestra on the receiving end.
+     */
     public void playNextTick()
     {
 //        System.out.println("Bar: " + bar + ", tick: " + tick);
@@ -153,6 +160,11 @@ public class Orchestra {
         }
     }
     
+    /**
+     * Sets the instrument of a particular track
+     * @param track
+     * @param instrument 
+     */
     public void setTrackInstrument(int track, int instrument)
     {
         if (track < tracks.size())
@@ -161,6 +173,11 @@ public class Orchestra {
         }
     }
     
+    /**
+     * Sets the channel of a particular track
+     * @param track
+     * @param channel 
+     */
     public void setTrackChannel(int track, int channel)
     {
         if (track < tracks.size())

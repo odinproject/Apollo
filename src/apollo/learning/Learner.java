@@ -1,7 +1,7 @@
 package apollo.learning;
 
 /**
- *
+ * Main Learning Application. Defers to ChordAnalyzer.
  * @author Martin
  */
 public class Learner
