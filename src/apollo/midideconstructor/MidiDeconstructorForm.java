@@ -650,7 +650,7 @@ public class MidiDeconstructorForm extends javax.swing.JFrame {
      */
     public void updateBars(double[] noteWeights, Chord decidedChord, double conf) 
     {
-        //Funcs.printArray(noteWeights);
+        Funcs.printArray(noteWeights);
         //If one of the bars would overflow, change all bars to match.
         for (int x = 0; x < 12; x++)
         {

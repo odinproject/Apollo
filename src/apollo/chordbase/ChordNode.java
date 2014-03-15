@@ -6,6 +6,7 @@
 
 package apollo.chordbase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,7 +18,7 @@ import java.util.Random;
  * of "playing" from the notions of "transitioning."
  * @author Talonos
  */
-public class ChordNode 
+public class ChordNode implements Serializable
 {
     /**
      * The chord this node contains
@@ -92,6 +93,33 @@ public class ChordNode
     Chord getChord() 
     {
         return _chord;
+    }
+
+    void clearTransitions() 
+    {
+        _transitions.clear();
+    }
+
+    void printAllTransitions() 
+    {
+        System.out.println("Transitions from "+_chord);
+        for (ChordNodeTransition t : _transitions)
+        {
+            System.out.println(" - "+t.getDestination()._chord);
+        }
+    }
+
+    boolean containsTransitionTo(ChordNode toTransitionTo) 
+    {
+        for (ChordNodeTransition t : _transitions)
+        {
+            if (t.getDestination() == toTransitionTo)
+            {
+                return true;
+            }
+        }
+        System.out.println("Returning flase!");
+        return false;
     }
     
 }

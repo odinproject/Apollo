@@ -6,6 +6,7 @@
 
 package apollo.chordbase;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -15,7 +16,7 @@ import java.util.Set;
  * A class to represent a chord in a single octave.
  * @author Talonos
  */
-public class Chord implements Comparable
+public class Chord implements Comparable, Serializable
 {
     /**
      * The notes in this chord.

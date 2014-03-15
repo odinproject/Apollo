@@ -339,4 +339,9 @@ public class ChordDatabase
         toReturn.confidence = confidence;
         return toReturn;
     }
+    
+    protected void loadTransitionFunction(String fileName)
+    {
+        
+    }
 }

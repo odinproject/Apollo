@@ -61,6 +61,6 @@ public class ApolloPlayer
                     // All the work of selecting a chord and playing it happen in the composer
                     composer.update();
                 }
-            }, 0, 100);
+            }, 0, 80);
     }
 }

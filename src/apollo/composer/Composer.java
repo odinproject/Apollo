@@ -6,6 +6,7 @@
 
 package apollo.composer;
 
+import apollo.chordbase.BrennanChordDatabase;
 import apollo.chordbase.CheatChordDatabase;
 import apollo.chordbase.Chord;
 import apollo.chordbase.ChordDatabase;
@@ -72,7 +73,7 @@ public class Composer {
     private CheatChordDatabase cheatSheet;
     // A reference to the chordDatabase to lookup chords for a given pitch/type 
     // on demand
-    private ChordDatabase database;
+    private BrennanChordDatabase database;
    
     public final static Integer MIDDLE_C_OFFSET = 60;
     
@@ -87,7 +88,7 @@ public class Composer {
         
         orchestra = o;
         cheatSheet = new CheatChordDatabase();
-        database = new ChordDatabase();
+        database = new BrennanChordDatabase();
         cheatSheet.setSongNumber(2);
         
         // this is currently UNUSED. I will be expanding this soon.
@@ -134,7 +135,8 @@ public class Composer {
             Chord c = getRandomChord();
             if (!randomOn)
             {
-                c = nextChordForCurrentFactors();
+                //c = nextChordForCurrentFactors();
+                c = nextChordFromBrennanDatabase();
             }
             orchestra.addBarToTrack(1, barForChord(c));
         }
@@ -394,6 +396,11 @@ public class Composer {
         }
         
         return intenseRhythm;
+    }
+
+    private Chord nextChordFromBrennanDatabase() 
+    {
+        return database.getNextChord(0);
     }
         
 }

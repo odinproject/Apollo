@@ -125,7 +125,7 @@ public class Deconstructor
             int modePicked = -1;
             for (int mode = 0; mode < 4; mode++)
             {
-                //Funcs.printArray(weights[mode]);
+                Funcs.printArray(weights[mode]);
                 ChordConfidences proposedCC = d.getChordWithConfidence(weights[mode]);
                 if (proposedCC.confidence > bestSoFar)
                 {
@@ -134,9 +134,11 @@ public class Deconstructor
                     modePicked = mode;
                 }
             }
+            sampleWeights.add(weights[modePicked]);
+            System.out.print("Picked:");
+            Funcs.printArray(weights[modePicked]);
             modesPicked[modePicked]++;
             segment.add(cc);
-            sampleWeights.add(weights[modePicked]);
             //If we're at the end of a segment, save it.
             pulsesThisSegmentSoFar++;
             if ((pulsesThisSegmentSoFar)%(samplesPerBeat*beatsPerSegment)==0&&pulsesThisSegmentSoFar!=0)

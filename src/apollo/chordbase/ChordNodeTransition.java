@@ -6,6 +6,7 @@
 
 package apollo.chordbase;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Objects;
  * We'll have to see how it works out.
  * @author Talonos
  */
-class ChordNodeTransition 
+class ChordNodeTransition implements Serializable
 {
     /**
      * The source of the transition. We might not need this, actually, but I'm putting
