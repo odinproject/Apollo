@@ -15,6 +15,11 @@ public class Bar {
     public Bar()
     {
         ticks = new Tick[16];
+        for (int i=0; i<15; i++)
+        {
+            Tick t = new Tick();
+            ticks[i] = t;
+        }
     }
     
     public Tick getTick(int tickNumber)

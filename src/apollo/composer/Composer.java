@@ -74,6 +74,8 @@ public class Composer {
     // A reference to the chordDatabase to lookup chords for a given pitch/type 
     // on demand
     private BrennanChordDatabase database;
+    
+    private RhythmDatabase rhythmDatabase;
    
     public final static Integer MIDDLE_C_OFFSET = 60;
     
@@ -89,6 +91,7 @@ public class Composer {
         orchestra = o;
         cheatSheet = new CheatChordDatabase();
         database = new BrennanChordDatabase();
+        rhythmDatabase = new RhythmDatabase();
         cheatSheet.setSongNumber(2);
         
         // this is currently UNUSED. I will be expanding this soon.
@@ -116,6 +119,8 @@ public class Composer {
         
         // upload the serialized weights that we learned earlier
         weights = scribe.loadWeightsFromFile("chordweights.txt");
+        
+        
     }
     
     /**
