@@ -22,6 +22,8 @@ import java.util.logging.Logger;
  */
 public class BrennanChordDatabase extends ChordDatabase 
 {
+    private ChordNode[][] _calmData;
+    private ChordNode[][] _intenseData;
     public BrennanChordDatabase()
     {
         super();
@@ -29,7 +31,10 @@ public class BrennanChordDatabase extends ChordDatabase
         try 
         {
             i = new ObjectInputStream(new FileInputStream("./relaxedDatabase.cpd"));
-            this._chordNodeLibrary = (ChordNode[][])(i.readObject());
+            this._calmData = (ChordNode[][])(i.readObject());
+            
+            i = new ObjectInputStream(new FileInputStream("./intenseDatabase.cpd"));
+            this._intenseData = (ChordNode[][])(i.readObject());
             _currentChordNode = _chordNodeLibrary[0][0];
         } 
         catch (FileNotFoundException ex) 
@@ -59,9 +64,15 @@ public class BrennanChordDatabase extends ChordDatabase
     
     private List<Chord> macro = new LinkedList<>();
     
+    boolean isRelaxed;
+    
     @Override
-    public Chord getNextChord(int emotiveState) 
+    public Chord getNextChord(double emotiveState) 
     {
+        swapIsRelaxed(emotiveState);
+        
+        //System.out.println("Getting: ");
+        //new Exception().printStackTrace(System.out);
         if (macro.isEmpty())
         {
             generateNewMacro();
@@ -74,7 +85,7 @@ public class BrennanChordDatabase extends ChordDatabase
     
     private void generateNewMacro() 
     {   
-        /*switch(dice.nextInt(2))
+        switch(dice.nextInt(2))
         {
             case 0:
                 basicStructure();
@@ -85,8 +96,7 @@ public class BrennanChordDatabase extends ChordDatabase
             case 2:
                 otherStructure();
                 return;
-        }*/
-otherStructure();
+        }
         return;
     }
 
@@ -167,5 +177,23 @@ otherStructure();
         macro.add(d.getChord());
         macro.add(e.getChord());
         macro.add(c.getChord());
+    }
+
+    
+    private void swapIsRelaxed(double emotiveState) 
+    {
+        if (isRelaxed&&emotiveState>0)
+        {
+            Random dice = new Random();
+            isRelaxed = false;
+            this._currentChordNode = this._intenseData[dice.nextInt(8)][dice.nextInt(12)];
+        }
+        else if (!isRelaxed&&emotiveState<0)
+        {
+            Random dice = new Random();
+            isRelaxed = true;
+            this._currentChordNode = this._calmData[dice.nextInt(8)][dice.nextInt(12)];
+        }
+        System.out.println("Swapping to relaxed = "+isRelaxed);
     }
 }

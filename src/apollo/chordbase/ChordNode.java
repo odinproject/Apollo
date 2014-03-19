@@ -79,7 +79,7 @@ public class ChordNode implements Serializable
         return true;
     }
 
-    ChordNode getTransition(int emotiveState) 
+    ChordNode getTransition(double emotiveState) 
     {
         Random dice = new Random();
         int transitionNumber =  dice.nextInt(_transitions.size());

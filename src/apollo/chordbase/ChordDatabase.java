@@ -183,7 +183,7 @@ public class ChordDatabase
      * @param emotiveState a number to determine chord transitions.
      * @return 
      */
-    public Chord getNextChord(int emotiveState) 
+    public Chord getNextChord(double emotiveState) 
     {
         _currentChordNode = _currentChordNode.getTransition(emotiveState);
         return _currentChordNode.getChord();
