@@ -65,7 +65,7 @@ public class Orchestra {
             synth.open();
             
 //            Soundbank defaultSoundbank = synth.getDefaultSoundbank();
-            File f= new File("Soundfonts/Famicom.sf2");
+            File f= new File("Soundfonts/GXSCC.sf2");
             Soundbank famicomSoundbank = MidiSystem.getSoundbank(f);
             midiChannels = synth.getChannels();
 //            synth.loadAllInstruments(defaultSoundbank);
@@ -77,16 +77,21 @@ public class Orchestra {
 
             Track backgroundChords = new Track(1);
             tracks.add(backgroundChords);
-            setTrackInstrument(1, 5); // Famicom 5 is nice, game-y chord instrument
+            setTrackInstrument(1, 9); // Famicom 5 is nice, game-y chord instrument
 
             Track percussion = new Track(10);
             tracks.add(percussion);
-            setTrackInstrument(2, 116); // Default 116 is the best rhythm so far...
+            setTrackInstrument(2, 12); // Default 116 is the best rhythm so far...
         }
         catch (IOException | InvalidMidiDataException | MidiUnavailableException ex) 
         {
             Logger.getLogger(Apollo.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public int currentBar()
+    {
+        return bar;
     }
     
     public void play()

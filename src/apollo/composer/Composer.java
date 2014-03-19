@@ -17,6 +17,7 @@ import apollo.orchestra.Note;
 import apollo.orchestra.Orchestra;
 import apollo.orchestra.Tick;
 import game.GameProperties;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
 
@@ -119,8 +120,6 @@ public class Composer {
         
         // upload the serialized weights that we learned earlier
         weights = scribe.loadWeightsFromFile("chordweights.txt");
-        
-        
     }
     
     /**
@@ -133,11 +132,13 @@ public class Composer {
     }
     
     public void update()
-    {
+    {      
+        int currentBar = orchestra.currentBar();
+        
+        Chord c = getRandomChord();
         if (orchestra.unplayedBarsForTrack(1)< 1)
         {
             // get cheat chords
-            Chord c = getRandomChord();
             if (!randomOn)
             {
                 //c = nextChordForCurrentFactors();
@@ -145,6 +146,8 @@ public class Composer {
             }
             orchestra.addBarToTrack(1, barForChord(c));
         }
+        
+//        int chordsLoadedUpToBar = currentBar + orchestra.unplayedBarsForTrack(1);
         
         // switches tension depending on whether the player is in the cave or forest
         if (properties.getPlayerXPosition() > -1333.0)
@@ -164,18 +167,61 @@ public class Composer {
             Bar nextRhythm = new Bar();
             if (speed > 2)
             {
-                nextRhythm = intenseRhythm();
+                nextRhythm = rhythmDatabase.getRhythm(1, 1);
             }
             else if (speed < 2 && speed > 0)
             {
-                nextRhythm = mediumRhythm();
+                nextRhythm = rhythmDatabase.getRhythm(1, 6);
             }
             else if (speed == 0)
             {
-                nextRhythm = simpleRhythm();
+                nextRhythm = rhythmDatabase.getRhythm(1, 5);
             }
-            orchestra.addBarToTrack(2, nextRhythm);
+            
+//            orchestra.addBarToTrack(2, intenseRhythm());
+            
+            
+            orchestra.addBarToTrack(2, melodicRhythmForRhythm(nextRhythm, c));
+//            System.out.println("SUCCESS!");
         }
+    }
+    
+    private Bar melodicRhythmForRhythm(Bar rhythm, Chord c)
+    {
+        // get the note distribution for the chord c
+        ArrayList<Integer> notes = new ArrayList();
+        notes.addAll(c.getNotes());
+        
+        int[] noteArray = new int[notes.size()];
+        
+        for (int i=0; i<notes.size(); i++)
+        {
+            int note = notes.get(i);
+            note += 60;
+            noteArray[i] = note;
+        }
+        
+        // randomly assign rhythm notes from among the note array
+        Random rand = new Random();
+        
+        Bar melodicRhythm = new Bar();
+        
+        for (int i=0; i<16; i++)
+        {
+            Tick t = new Tick();
+            if (rhythm.getTick(i).getNotes().size() > 0)
+            {
+                for (int stopIndex=0; stopIndex<128; stopIndex++)
+                {
+                    t.addStop((short)stopIndex);
+                }
+                int randomPitch = rand.nextInt(noteArray.length);
+                t.addNote((short)noteArray[randomPitch], (short)200);
+            }
+            melodicRhythm.addTick(i, t);
+        }
+
+        return melodicRhythm;
     }
     
     /**
@@ -358,7 +404,7 @@ public class Composer {
         for (int i=0; i<16; i++)
         {
             Tick t = new Tick();
-            if (i%8 == 0)
+            if (i%4 == 0)
             {
                 Note n = new Note((short)60, (short)300);
                 t.addNote(n);

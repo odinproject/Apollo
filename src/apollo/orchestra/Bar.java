@@ -15,9 +15,23 @@ public class Bar {
     public Bar()
     {
         ticks = new Tick[16];
-        for (int i=0; i<15; i++)
+        for (int i=0; i<16; i++)
         {
             Tick t = new Tick();
+            ticks[i] = t;
+        }
+    }
+    
+    /** 
+     * Copy constructor
+     * @param other 
+     */
+    public Bar(Bar other)
+    {
+        ticks = new Tick[16];
+        for (int i=0; i<16; i++)
+        {
+            Tick t = new Tick(other.getTick(i));
             ticks[i] = t;
         }
     }

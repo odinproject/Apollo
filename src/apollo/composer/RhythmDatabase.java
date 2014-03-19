@@ -38,6 +38,16 @@ public class RhythmDatabase {
         rhythms.add(answers);
     }
     
+    public void addRhythm (int type, int index, Bar b)
+    {
+        rhythms.get(type).add(index, b);
+    }
+    
+    public Bar getRhythm (int type, int index)
+    {
+        return rhythms.get(type).get(index);
+    }
+    
     private Bar createRhythmWithBeats(int[] beats)
     {
         Bar r = new Bar();
@@ -47,7 +57,7 @@ public class RhythmDatabase {
             {
                 Tick t = new Tick();
                 t.addStop((short)60);
-                t.addNote((short)60, (short)1);
+                t.addNote((short)60, (short)200);
                 r.addTick(i, t);
             }
             else if (beats[i] == 2)

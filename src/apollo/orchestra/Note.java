@@ -27,6 +27,16 @@ public class Note {
         this.velocity = velocity;
     }
     
+    /**
+     * Copy constructor
+     * @param other 
+     */
+    public Note(Note other)
+    {
+        this.pitch = other.getPitch();
+        this.velocity = other.getVelocity();
+    }
+    
     public short getPitch()
     {
         return pitch;

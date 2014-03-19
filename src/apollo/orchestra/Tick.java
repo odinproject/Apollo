@@ -23,6 +23,26 @@ public class Tick {
         stops = new ArrayList<Note>();
     }
     
+    /**
+     * Copy constructor
+     * @param other 
+     */
+    public Tick(Tick other)
+    {
+        notes = new ArrayList<Note>();
+        stops = new ArrayList<Note>();
+        for (int i=0; i<other.getNotes().size(); i++)
+        {
+            Note n = new Note(other.getNotes().get(i));
+            notes.add(n);
+        }
+        for (int i=0; i<other.getStops().size(); i++)
+        {
+            Note n = new Note(other.getStops().get(i));
+            stops.add(n);
+        }
+    }
+    
     public ArrayList<Note> getNotes()
     {
         return notes;
